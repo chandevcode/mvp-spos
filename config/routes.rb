@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
+  get "dashboard", to: "dashboard#index", as: :dashboard
+  
   devise_for :users
   resources :products
+  resources :users, only: [:index, :new, :create, :destroy]
 
   post "cart/add/:product_id", to: "cart#add", as: :add_to_cart
   post "cart/remove/:product_id", to: "cart#remove", as: :remove_from_cart

@@ -21,6 +21,8 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://unpkg.com/chartkick@5.0.1/dist/chartkick.js"></script>
   </head>
 
   <body class="bg-zinc-950 text-zinc-50 min-h-screen">
@@ -29,10 +31,13 @@
         <%= link_to root_path, class: "text-2xl font-black tracking-tighter text-emerald-400" do %>
           SPOS
         <% end %>
-        <div class="flex items-center gap-3">
+        
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center gap-3">
           <% if user_signed_in? %>
             <% if current_user.owner? %>
-              <%= link_to "Dashboard", "#", class: "text-sm font-semibold text-zinc-400 hover:text-zinc-50 transition" %>
+              <%= link_to "Dashboard", dashboard_path, class: "text-sm font-semibold text-zinc-400 hover:text-zinc-50 transition" %>
+              <%= link_to "Users", users_path, class: "text-sm font-semibold text-zinc-400 hover:text-zinc-50 transition" %>
             <% end %>
             <%= link_to "Products", products_path, class: "text-sm font-semibold text-zinc-400 hover:text-zinc-50 transition" %>
             <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "text-sm font-semibold text-zinc-400 hover:text-zinc-50 transition" %>
@@ -40,8 +45,38 @@
             <%= link_to "Login", new_user_session_path, class: "text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition" %>
           <% end %>
         </div>
+
+        <!-- Mobile Menu Button -->
+        <button onclick="toggleMenu()" class="md:hidden w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-zinc-50 transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobileMenu" class="hidden md:hidden border-t border-zinc-800 bg-zinc-900">
+        <div class="px-4 py-3 space-y-2">
+          <% if user_signed_in? %>
+            <% if current_user.owner? %>
+              <%= link_to "Dashboard", dashboard_path, class: "block px-4 py-2 text-sm font-semibold text-zinc-400 hover:text-zinc-50 hover:bg-zinc-800 rounded-lg transition" %>
+              <%= link_to "Users", users_path, class: "block px-4 py-2 text-sm font-semibold text-zinc-400 hover:text-zinc-50 hover:bg-zinc-800 rounded-lg transition" %>
+            <% end %>
+            <%= link_to "Products", products_path, class: "block px-4 py-2 text-sm font-semibold text-zinc-400 hover:text-zinc-50 hover:bg-zinc-800 rounded-lg transition" %>
+            <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "w-full text-left px-4 py-2 text-sm font-semibold text-zinc-400 hover:text-zinc-50 hover:bg-zinc-800 rounded-lg transition" %>
+          <% else %>
+            <%= link_to "Login", new_user_session_path, class: "block px-4 py-2 text-sm font-semibold text-emerald-400 hover:text-emerald-300 hover:bg-zinc-800 rounded-lg transition" %>
+          <% end %>
+        </div>
       </div>
     </nav>
+
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById('mobileMenu');
+        menu.classList.toggle('hidden');
+      }
+    </script>
 
     <% if notice || alert %>
       <div class="fixed top-16 left-4 right-4 z-40 animate-in slide-in-from-top duration-300">

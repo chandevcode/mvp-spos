@@ -1,0 +1,154 @@
+<div class="max-w-7xl mx-auto">
+  <h1 class="text-3xl font-black tracking-tight mb-6">Dashboard</h1>
+
+  <!-- Quick Date Filters -->
+  <div class="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-hide">
+    <%= link_to "Today", dashboard_path(start_date: Date.today, end_date: Date.today), class: "px-4 py-2 #{@start_date == Date.today && @end_date == Date.today ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400'} rounded-full text-sm font-bold whitespace-nowrap transition" %>
+    <%= link_to "7 Days", dashboard_path(start_date: 7.days.ago.to_date, end_date: Date.today), class: "px-4 py-2 #{@start_date == 7.days.ago.to_date && @end_date == Date.today ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400'} rounded-full text-sm font-bold whitespace-nowrap transition" %>
+    <%= link_to "30 Days", dashboard_path(start_date: 30.days.ago.to_date, end_date: Date.today), class: "px-4 py-2 #{@start_date == 30.days.ago.to_date && @end_date == Date.today ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400'} rounded-full text-sm font-bold whitespace-nowrap transition" %>
+    <%= link_to "This Month", dashboard_path(start_date: Date.today.beginning_of_month, end_date: Date.today), class: "px-4 py-2 #{@start_date == Date.today.beginning_of_month && @end_date == Date.today ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400'} rounded-full text-sm font-bold whitespace-nowrap transition" %>
+  </div>
+
+  <!-- Custom Date Range -->
+  <details class="bg-zinc-900 border border-zinc-800 rounded-2xl mb-6 overflow-hidden">
+    <summary class="px-4 py-3 font-bold text-sm cursor-pointer hover:bg-zinc-800 transition">
+      📅 Custom Date Range
+    </summary>
+    <%= form_with url: dashboard_path, method: :get, class: "p-4 space-y-3 border-t border-zinc-800" do |f| %>
+      <div>
+        <%= f.label :start_date, "From", class: "block text-xs font-bold text-zinc-400 mb-2" %>
+        <%= f.date_field :start_date, value: @start_date, class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50" %>
+      </div>
+      <div>
+        <%= f.label :end_date, "To", class: "block text-xs font-bold text-zinc-400 mb-2" %>
+        <%= f.date_field :end_date, value: @end_date, class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50" %>
+      </div>
+      <%= f.submit "Apply", class: "w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3 rounded-xl font-bold transition cursor-pointer" %>
+    <% end %>
+  </details>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 gap-3 mb-6">
+    <div class="bg-gradient-to-br from-emerald-500/20 to-zinc-900 border border-emerald-500/30 rounded-2xl p-5">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-emerald-400 text-sm font-semibold mb-1">Total Revenue</p>
+          <p class="text-4xl font-black text-emerald-400">$<%= number_with_precision(@total_revenue, precision: 2) %></p>
+        </div>
+        <div class="text-5xl">💰</div>
+      </div>
+    </div>
+    
+    <div class="grid grid-cols-2 gap-3">
+      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
+        <p class="text-zinc-500 text-xs font-semibold mb-2">✅ Success</p>
+        <p class="text-3xl font-black text-emerald-400"><%= @success_count %></p>
+      </div>
+      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
+        <p class="text-zinc-500 text-xs font-semibold mb-2">❌ Canceled</p>
+        <p class="text-3xl font-black text-red-400"><%= @canceled_count %></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="space-y-4 mb-6">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
+      <h2 class="text-lg font-black mb-4 flex items-center gap-2">
+        <span>📈</span> Daily Revenue
+      </h2>
+      <div class="h-64">
+        <%= line_chart @all_transactions.success.group_by_day(:created_at, range: @start_date..@end_date).sum(:total_price), 
+            adapter: "google",
+            colors: ["#10b981"],
+            library: {
+              backgroundColor: { fill: "transparent" },
+              chartArea: { width: "85%", height: "75%" },
+              legend: { position: "none" },
+              hAxis: { 
+                textStyle: { color: "#71717a", fontSize: 11 },
+                gridlines: { color: "transparent" }
+              },
+              vAxis: { 
+                textStyle: { color: "#71717a", fontSize: 11 },
+                gridlines: { color: "#27272a" }
+              }
+            } %>
+      </div>
+    </div>
+    
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
+      <h2 class="text-lg font-black mb-4 flex items-center gap-2">
+        <span>📊</span> Daily Orders
+      </h2>
+      <div class="h-64">
+        <%= line_chart @all_transactions.group_by_day(:created_at, range: @start_date..@end_date).group(:status).count,
+            adapter: "google",
+            colors: ["#10b981", "#ef4444"],
+            library: {
+              backgroundColor: { fill: "transparent" },
+              chartArea: { width: "85%", height: "75%" },
+              hAxis: { 
+                textStyle: { color: "#71717a", fontSize: 11 },
+                gridlines: { color: "transparent" }
+              },
+              vAxis: { 
+                textStyle: { color: "#71717a", fontSize: 11 },
+                gridlines: { color: "#27272a" }
+              }
+            } %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transactions Table -->
+  <div class="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
+    <div class="p-4 border-b border-zinc-800">
+      <h2 class="text-xl font-black flex items-center gap-2">
+        <span>🧾</span> Recent Transactions
+      </h2>
+    </div>
+    <div class="divide-y divide-zinc-800">
+      <% @transactions.each do |transaction| %>
+        <div class="p-4">
+          <div class="flex items-start justify-between mb-2">
+            <div>
+              <p class="font-mono text-sm text-zinc-500">#<%= transaction.id %></p>
+              <p class="text-xs text-zinc-500"><%= transaction.created_at.strftime("%b %d, %Y %H:%M") %></p>
+            </div>
+            <% if transaction.success? %>
+              <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 rounded-full text-xs font-bold">Success</span>
+            <% else %>
+              <span class="px-3 py-1 bg-red-500/10 text-red-400 rounded-full text-xs font-bold">Canceled</span>
+            <% end %>
+          </div>
+          <div class="flex items-center justify-between">
+            <p class="text-sm text-zinc-400"><%= transaction.user.email %></p>
+            <p class="text-xl font-black text-emerald-400">$<%= transaction.total_price %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    
+    <!-- Pagination -->
+    <% if @transactions.total_pages > 1 %>
+      <div class="p-4 border-t border-zinc-800 flex items-center justify-between">
+        <div class="text-sm text-zinc-500">
+          Page <%= @transactions.current_page %> of <%= @transactions.total_pages %>
+        </div>
+        <div class="flex gap-2">
+          <% if @transactions.prev_page %>
+            <%= link_to dashboard_path(page: @transactions.prev_page, start_date: @start_date, end_date: @end_date), class: "px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-50 rounded-lg font-semibold transition" do %>
+              ← Prev
+            <% end %>
+          <% end %>
+          <% if @transactions.next_page %>
+            <%= link_to dashboard_path(page: @transactions.next_page, start_date: @start_date, end_date: @end_date), class: "px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 rounded-lg font-semibold transition" do %>
+              Next →
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
