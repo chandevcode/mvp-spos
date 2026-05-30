@@ -2,6 +2,12 @@ Rails.application.routes.draw do
   devise_for :users
   resources :products
 
+  post "cart/add/:product_id", to: "cart#add", as: :add_to_cart
+  post "cart/remove/:product_id", to: "cart#remove", as: :remove_from_cart
+  delete "cart/clear", to: "cart#clear", as: :clear_cart
+  get "cart", to: "cart#show", as: :cart
+  post "cart/checkout", to: "cart#checkout", as: :checkout
+
   root "home#index"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
