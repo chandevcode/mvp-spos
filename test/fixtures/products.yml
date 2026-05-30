@@ -1,15 +1,15 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
+  name: Product One
   description: MyText
-  price: 9.99
+  price: 15000
   category: 1
   image_url: MyString
 
 two:
-  name: MyString
+  name: Product Two
   description: MyText
-  price: 9.99
+  price: 25000
   category: 1
   image_url: MyString

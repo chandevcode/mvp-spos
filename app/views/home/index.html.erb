@@ -14,21 +14,26 @@
   <% if @products.any? %>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
       <% @products.each do |product| %>
-        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden group hover:border-emerald-500/50 transition-all duration-300">
-          <div class="aspect-square bg-gradient-to-br from-emerald-500/20 to-zinc-900 flex items-center justify-center">
-            <div class="text-4xl"><%= product.category == "food" ? "🍕" : "🥤" %></div>
-          </div>
-          <div class="p-3">
-            <h3 class="font-bold text-sm mb-1 truncate"><%= product.name %></h3>
-            <p class="text-xs text-zinc-500 mb-2 truncate"><%= product.description %></p>
-            <div class="flex items-center justify-between">
-              <span class="text-emerald-400 font-black text-lg">$<%= product.price %></span>
-              <%= button_to add_to_cart_path(product), method: :post, class: "bg-emerald-500 hover:bg-emerald-400 text-zinc-950 w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all active:scale-95" do %>
-                +
-              <% end %>
+        <%= button_to add_to_cart_path(product), method: :post, class: "block w-full text-left group" do %>
+          <div class="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-emerald-500/50 transition-all duration-300 h-full flex flex-col">
+            <div class="aspect-square bg-gradient-to-br from-emerald-500/20 to-zinc-900 flex items-center justify-center relative overflow-hidden">
+              <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300"><%= product.category == "food" ? "🍕" : "🥤" %></div>
+              <div class="absolute inset-0 bg-emerald-500/0 group-active:bg-emerald-500/10 transition-colors"></div>
+            </div>
+            <div class="p-3 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="font-bold text-sm mb-1 truncate group-hover:text-emerald-400 transition-colors"><%= product.name %></h3>
+                <p class="text-xs text-zinc-500 mb-2 truncate"><%= product.description %></p>
+              </div>
+              <div class="flex items-center justify-between mt-auto">
+                <span class="text-emerald-400 font-black text-lg"><%= format_currency(product.price) %></span>
+                <div class="bg-emerald-500 group-hover:bg-emerald-400 text-zinc-950 w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all group-active:scale-95">
+                  +
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
     </div>
   <% else %>
@@ -45,7 +50,7 @@
 <% if cart_count > 0 %>
   <%= link_to cart_path, class: "fixed bottom-6 right-6 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 px-6 py-4 rounded-full shadow-2xl shadow-emerald-500/50 flex items-center gap-3 font-black text-lg transition-all active:scale-95 z-40" do %>
     <span>🛒</span>
-    <span>$<%= number_with_precision(cart_total, precision: 2) %></span>
+    <span><%= format_currency(cart_total) %></span>
     <span class="bg-zinc-950 text-emerald-400 w-6 h-6 rounded-full flex items-center justify-center text-sm"><%= cart_count %></span>
   <% end %>
 <% end %>

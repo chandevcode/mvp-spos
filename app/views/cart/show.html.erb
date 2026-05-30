@@ -17,7 +17,7 @@
           </div>
           <div class="flex-1 min-w-0">
             <h3 class="font-bold text-lg truncate"><%= product.name %></h3>
-            <p class="text-emerald-400 font-black text-lg">$<%= product.price %></p>
+            <p class="text-emerald-400 font-black text-lg"><%= format_currency(product.price) %></p>
           </div>
           <div class="flex items-center gap-3">
             <%= button_to remove_from_cart_path(product), method: :post, class: "w-8 h-8 bg-zinc-800 hover:bg-zinc-700 rounded-lg flex items-center justify-center font-bold transition" do %>
@@ -35,17 +35,20 @@
     <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4">
       <div class="flex items-center justify-between text-lg">
         <span class="text-zinc-400">Subtotal</span>
-        <span class="font-bold">$<%= number_with_precision(cart_total, precision: 2) %></span>
+        <span class="font-bold"><%= format_currency(cart_total) %></span>
       </div>
       <div class="flex items-center justify-between text-2xl border-t border-zinc-800 pt-4">
         <span class="font-black">Total</span>
-        <span class="font-black text-emerald-400">$<%= number_with_precision(cart_total, precision: 2) %></span>
+        <span class="font-black text-emerald-400"><%= format_currency(cart_total) %></span>
       </div>
       
-      <div class="flex gap-3 pt-4">
-        <%= button_to "Checkout", checkout_path, method: :post, class: "flex-1 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-4 rounded-xl font-black text-lg transition-all active:scale-95" %>
-        <%= button_to clear_cart_path, method: :delete, data: { turbo_confirm: "Clear all items?" }, class: "px-6 py-4 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl font-bold transition" do %>
-          🗑️
+      <div class="space-y-3 pt-4">
+        <div class="flex gap-3">
+          <%= button_to "Checkout", checkout_path, method: :post, class: "flex-1 bg-zinc-800 hover:bg-zinc-700 text-white py-4 rounded-xl font-black text-lg transition-all active:scale-95 border border-zinc-700" %>
+          <%= button_to "Checkout & Print", checkout_path(print: true), method: :post, class: "flex-1 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-4 rounded-xl font-black text-lg transition-all active:scale-95" %>
+        </div>
+        <%= button_to clear_cart_path, method: :delete, data: { turbo_confirm: "Clear all items?" }, class: "w-full py-3 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl font-bold transition flex items-center justify-center gap-2" do %>
+          <span>🗑️</span> Clear Cart
         <% end %>
       </div>
     </div>

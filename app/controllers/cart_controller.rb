@@ -41,6 +41,10 @@ class CartController < ApplicationController
     end
 
     session[:cart] = {}
-    redirect_to root_path, notice: "Order completed successfully!"
+    if params[:print] == "true"
+      redirect_to transaction_path(transaction), notice: "Order completed successfully!"
+    else
+      redirect_to root_path, notice: "Order completed successfully!"
+    end
   end
 end

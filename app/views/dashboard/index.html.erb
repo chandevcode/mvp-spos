@@ -33,7 +33,7 @@
       <div class="flex items-center justify-between">
         <div>
           <p class="text-emerald-400 text-sm font-semibold mb-1">Total Revenue</p>
-          <p class="text-4xl font-black text-emerald-400">$<%= number_with_precision(@total_revenue, precision: 2) %></p>
+          <p class="text-4xl font-black text-emerald-400"><%= format_currency(@total_revenue) %></p>
         </div>
         <div class="text-5xl">💰</div>
       </div>
@@ -124,7 +124,7 @@
           </div>
           <div class="flex items-center justify-between">
             <p class="text-sm text-zinc-400"><%= transaction.user.email %></p>
-            <p class="text-xl font-black text-emerald-400">$<%= transaction.total_price %></p>
+            <p class="text-xl font-black text-emerald-400"><%= format_currency(transaction.total_price) %></p>
           </div>
         </div>
       <% end %>
