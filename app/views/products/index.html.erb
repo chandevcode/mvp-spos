@@ -1,0 +1,37 @@
+<div class="max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-3xl font-black tracking-tight">Products</h1>
+    <%= link_to new_product_path, class: "bg-emerald-500 hover:bg-emerald-400 text-zinc-950 px-5 py-2.5 rounded-xl font-bold transition-all active:scale-95" do %>
+      + New Product
+    <% end %>
+  </div>
+
+  <div class="grid gap-3">
+    <% @products.each do |product| %>
+      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center gap-4 hover:border-emerald-500/50 transition">
+        <div class="w-16 h-16 bg-gradient-to-br from-emerald-500/20 to-zinc-800 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
+          <%= product.category == "food" ? "🍕" : "🥤" %>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h3 class="font-bold text-lg truncate"><%= product.name %></h3>
+          <p class="text-sm text-zinc-500 truncate"><%= product.description %></p>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-emerald-400 font-black text-lg">$<%= product.price %></span>
+            <span class="text-xs px-2 py-0.5 bg-zinc-800 text-zinc-400 rounded-full"><%= product.category %></span>
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <%= link_to product, class: "w-10 h-10 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center justify-center transition" do %>
+            <span class="text-lg">👁️</span>
+          <% end %>
+          <%= link_to edit_product_path(product), class: "w-10 h-10 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center justify-center transition" do %>
+            <span class="text-lg">✏️</span>
+          <% end %>
+          <%= button_to product, method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "w-10 h-10 bg-red-500/10 hover:bg-red-500/20 rounded-xl flex items-center justify-center transition" do %>
+            <span class="text-lg">🗑️</span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="max-w-7xl mx-auto">
+  <!-- Search & Filters -->
+  <div class="mb-6 space-y-3">
+    <input type="text" placeholder="Search products..." class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition">
+    
+    <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+      <button class="px-5 py-2 bg-emerald-500 text-zinc-950 rounded-full text-sm font-bold whitespace-nowrap">All</button>
+      <button class="px-5 py-2 bg-zinc-900 text-zinc-400 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-zinc-800 transition">Food</button>
+      <button class="px-5 py-2 bg-zinc-900 text-zinc-400 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-zinc-800 transition">Beverage</button>
+    </div>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+    <% 8.times do |i| %>
+      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden group hover:border-emerald-500/50 transition-all duration-300">
+        <div class="aspect-square bg-gradient-to-br from-emerald-500/20 to-zinc-900 flex items-center justify-center">
+          <div class="text-4xl">🍕</div>
+        </div>
+        <div class="p-3">
+          <h3 class="font-bold text-sm mb-1 truncate">Product <%= i + 1 %></h3>
+          <p class="text-xs text-zinc-500 mb-2 truncate">Delicious item</p>
+          <div class="flex items-center justify-between">
+            <span class="text-emerald-400 font-black text-lg">$12</span>
+            <button class="bg-emerald-500 hover:bg-emerald-400 text-zinc-950 w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all active:scale-95">+</button>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Floating Cart Button -->
+<button class="fixed bottom-6 right-6 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 px-6 py-4 rounded-full shadow-2xl shadow-emerald-500/50 flex items-center gap-3 font-black text-lg transition-all active:scale-95 z-40">
+  <span>🛒</span>
+  <span>$48.00</span>
+  <span class="bg-zinc-950 text-emerald-400 w-6 h-6 rounded-full flex items-center justify-center text-sm">4</span>
+</button>

@@ -1,0 +1,42 @@
+<%= form_with(model: product, class: "space-y-4") do |form| %>
+  <% if product.errors.any? %>
+    <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-4">
+      <h2 class="text-red-400 font-bold mb-2"><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+      <ul class="list-disc list-inside text-red-400 text-sm space-y-1">
+        <% product.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, class: "block text-sm font-bold text-zinc-400 mb-2" %>
+    <%= form.text_field :name, class: "w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+  </div>
+
+  <div>
+    <%= form.label :description, class: "block text-sm font-bold text-zinc-400 mb-2" %>
+    <%= form.text_area :description, rows: 3, class: "w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition resize-none" %>
+  </div>
+
+  <div>
+    <%= form.label :price, class: "block text-sm font-bold text-zinc-400 mb-2" %>
+    <%= form.number_field :price, step: 0.01, class: "w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+  </div>
+
+  <div>
+    <%= form.label :category, class: "block text-sm font-bold text-zinc-400 mb-2" %>
+    <%= form.select :category, [["Food", "food"], ["Beverage", "beverage"]], {}, class: "w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+  </div>
+
+  <div>
+    <%= form.label :image_url, class: "block text-sm font-bold text-zinc-400 mb-2" %>
+    <%= form.text_field :image_url, class: "w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+  </div>
+
+  <div class="flex gap-3 pt-4">
+    <%= form.submit class: "flex-1 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3 rounded-xl font-bold transition-all active:scale-95 cursor-pointer" %>
+    <%= link_to "Cancel", products_path, class: "flex-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-50 py-3 rounded-xl font-bold text-center transition" %>
+  </div>
+<% end %>

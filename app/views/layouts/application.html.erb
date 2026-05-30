@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Spos" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Spos">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-zinc-950 text-zinc-50 min-h-screen">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-zinc-900/80 backdrop-blur-xl border-b border-zinc-800">
+      <div class="px-4 py-3 flex items-center justify-between">
+        <%= link_to root_path, class: "text-2xl font-black tracking-tighter text-emerald-400" do %>
+          SPOS
+        <% end %>
+        <div class="flex items-center gap-3">
+          <% if user_signed_in? %>
+            <% if current_user.owner? %>
+              <%= link_to "Dashboard", "#", class: "text-sm font-semibold text-zinc-400 hover:text-zinc-50 transition" %>
+            <% end %>
+            <%= link_to "Products", products_path, class: "text-sm font-semibold text-zinc-400 hover:text-zinc-50 transition" %>
+            <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "text-sm font-semibold text-zinc-400 hover:text-zinc-50 transition" %>
+          <% else %>
+            <%= link_to "Login", new_user_session_path, class: "text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition" %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+
+    <% if notice || alert %>
+      <div class="fixed top-16 left-4 right-4 z-40 animate-in slide-in-from-top duration-300">
+        <% if notice %>
+          <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 mb-2 backdrop-blur-xl">
+            <p class="text-emerald-400 text-sm font-semibold"><%= notice %></p>
+          </div>
+        <% end %>
+        <% if alert %>
+          <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-4 backdrop-blur-xl">
+            <p class="text-red-400 text-sm font-semibold"><%= alert %></p>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <main class="pt-20 pb-24 px-4">
+      <%= yield %>
+    </main>
+  </body>
+</html>

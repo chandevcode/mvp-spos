@@ -1,0 +1,37 @@
+<div class="min-h-[80vh] flex items-center justify-center">
+  <div class="w-full max-w-md">
+    <div class="text-center mb-8">
+      <h1 class="text-5xl font-black tracking-tighter text-emerald-400 mb-2">SPOS</h1>
+      <p class="text-zinc-500 font-semibold">Sign in to continue</p>
+    </div>
+
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-5" }) do |f| %>
+        <div>
+          <%= f.label :email, class: "block text-sm font-bold text-zinc-400 mb-2" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+        </div>
+
+        <div>
+          <%= f.label :password, class: "block text-sm font-bold text-zinc-400 mb-2" %>
+          <%= f.password_field :password, autocomplete: "current-password", class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="flex items-center gap-2">
+            <%= f.check_box :remember_me, class: "w-4 h-4 rounded bg-zinc-950 border-zinc-800 text-emerald-500 focus:ring-emerald-500/50" %>
+            <%= f.label :remember_me, class: "text-sm text-zinc-400" %>
+          </div>
+        <% end %>
+
+        <div class="pt-2">
+          <%= f.submit "Sign in", class: "w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3 rounded-xl font-bold transition-all active:scale-95 cursor-pointer" %>
+        </div>
+      <% end %>
+
+      <div class="mt-6 pt-6 border-t border-zinc-800 text-center space-y-2">
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
+  </div>
+</div>
