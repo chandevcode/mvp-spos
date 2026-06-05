@@ -4,8 +4,12 @@
   <% end %>
 
   <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden">
-    <div class="aspect-video bg-gradient-to-br from-emerald-500/20 to-zinc-900 flex items-center justify-center">
-      <div class="text-8xl"><%= @product.category == "food" ? "🍕" : "🥤" %></div>
+    <div class="aspect-video bg-gradient-to-br from-emerald-500/20 to-zinc-900 flex items-center justify-center overflow-hidden">
+      <% if @product.image.attached? %>
+        <%= image_tag @product.image, class: "w-full h-full object-cover" %>
+      <% else %>
+        <div class="text-8xl"><%= @product.category == "food" ? "🍕" : "🥤" %></div>
+      <% end %>
     </div>
     
     <div class="p-6 space-y-4">

@@ -5,11 +5,9 @@ one:
   description: MyText
   price: 15000
   category: 1
-  image_url: MyString
 
 two:
   name: Product Two
   description: MyText
   price: 25000
   category: 1
-  image_url: MyString

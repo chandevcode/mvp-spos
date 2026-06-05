@@ -17,7 +17,11 @@
         <%= button_to add_to_cart_path(product), method: :post, data: { turbo_frame: "cart-floating" }, class: "block w-full text-left group" do %>
           <div class="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-emerald-500/50 transition-all duration-300 h-full flex flex-col">
             <div class="aspect-square bg-gradient-to-br from-emerald-500/20 to-zinc-900 flex items-center justify-center relative overflow-hidden">
-              <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300"><%= product.category == "food" ? "🍕" : "🥤" %></div>
+              <% if product.image.attached? %>
+                <%= image_tag product.image, class: "w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300" %>
+              <% else %>
+                <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300"><%= product.category == "food" ? "🍕" : "🥤" %></div>
+              <% end %>
               <div class="absolute inset-0 bg-emerald-500/0 group-active:bg-emerald-500/10 transition-colors"></div>
             </div>
             <div class="p-3 flex-1 flex flex-col justify-between">

@@ -9,8 +9,12 @@
   <div class="grid gap-3">
     <% @products.each do |product| %>
       <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center gap-4 hover:border-emerald-500/50 transition">
-        <div class="w-16 h-16 bg-gradient-to-br from-emerald-500/20 to-zinc-800 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
-          <%= product.category == "food" ? "🍕" : "🥤" %>
+        <div class="w-16 h-16 bg-gradient-to-br from-emerald-500/20 to-zinc-800 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 overflow-hidden">
+          <% if product.image.attached? %>
+            <%= image_tag product.image, class: "w-full h-full object-cover" %>
+          <% else %>
+            <span><%= product.category == "food" ? "🍕" : "🥤" %></span>
+          <% end %>
         </div>
         <div class="flex-1 min-w-0">
           <h3 class="font-bold text-lg truncate"><%= product.name %></h3>
