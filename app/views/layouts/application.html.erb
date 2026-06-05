@@ -83,7 +83,7 @@
     </script>
 
     <% if notice || alert %>
-      <div class="fixed top-16 left-4 right-4 z-40 animate-in slide-in-from-top duration-300">
+      <div data-controller="flash" class="fixed top-16 left-4 right-4 z-40 animate-in slide-in-from-top duration-300">
         <% if notice %>
           <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 mb-2 backdrop-blur-xl">
             <p class="text-emerald-400 text-sm font-semibold"><%= notice %></p>

@@ -4,7 +4,7 @@
   <% end %>
 
   <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
-    <h1 class="text-3xl font-black tracking-tight mb-6">Add Admin User</h1>
+    <h1 class="text-3xl font-black tracking-tight mb-6">Add User</h1>
     
     <%= form_with model: @user, url: users_path, class: "space-y-4" do |f| %>
       <% if @user.errors.any? %>
@@ -24,6 +24,11 @@
       </div>
 
       <div>
+        <%= f.label :role, class: "block text-sm font-bold text-zinc-400 mb-2" %>
+        <%= f.select :role, [["Admin", "admin"], ["Owner", "owner"]], {}, class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+      </div>
+
+      <div>
         <%= f.label :password, class: "block text-sm font-bold text-zinc-400 mb-2" %>
         <%= f.password_field :password, class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
         <p class="text-xs text-zinc-500 mt-1">Minimum 6 characters</p>
@@ -35,7 +40,7 @@
       </div>
 
       <div class="flex gap-3 pt-4">
-        <%= f.submit "Create Admin", class: "flex-1 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3 rounded-xl font-bold transition-all active:scale-95 cursor-pointer" %>
+        <%= f.submit "Create User", class: "flex-1 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3 rounded-xl font-bold transition-all active:scale-95 cursor-pointer" %>
         <%= link_to "Cancel", users_path, class: "flex-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-50 py-3 rounded-xl font-bold text-center transition" %>
       </div>
     <% end %>

@@ -3,28 +3,23 @@ class UsersController < ApplicationController
   before_action :authorize_owner
 
   def index
-    @users = User.where(role: :admin).order(created_at: :desc)
+    @users = User.order(created_at: :desc)
   end
 
   def new
-    if User.admin.count >= 3
-      redirect_to users_path, alert: "Maximum 2 admin users allowed"
-      return
-    end
     @user = User.new
   end
 
   def create
-    if User.admin.count >= 3
+    if user_params[:role] == "admin" && User.admin.count >= 2
       redirect_to users_path, alert: "Maximum 2 admin users allowed"
       return
     end
 
     @user = User.new(user_params)
-    @user.role = :admin
 
     if @user.save
-      redirect_to users_path, notice: "Admin user created successfully"
+      redirect_to users_path, notice: "User created successfully"
     else
       render :new, status: :unprocessable_entity
     end
@@ -36,7 +31,7 @@ class UsersController < ApplicationController
       redirect_to users_path, alert: "Cannot delete owner"
     else
       @user.destroy
-      redirect_to users_path, notice: "Admin user deleted"
+      redirect_to users_path, notice: "User deleted"
     end
   end
 
@@ -47,6 +42,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation)
+    params.require(:user).permit(:email, :password, :password_confirmation, :role)
   end
 end

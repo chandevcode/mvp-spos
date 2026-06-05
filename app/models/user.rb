@@ -6,5 +6,5 @@ class User < ApplicationRecord
 
   enum :role, { admin: 0, owner: 1 }, default: :admin
 
-  has_many :transactions, dependent: :nullify
+  has_many :transactions, dependent: :destroy
 end
