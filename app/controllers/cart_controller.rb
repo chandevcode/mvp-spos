@@ -4,7 +4,17 @@ class CartController < ApplicationController
   def add
     product_id = params[:product_id]
     cart[product_id] = cart[product_id].to_i + 1
-    redirect_back fallback_location: root_path, notice: "Added to cart"
+
+    respond_to do |format|
+      format.html do
+        case turbo_frame_request_id
+        when "cart-floating" then render partial: "cart/floating_button_frame"
+        when "cart-content"  then render partial: "cart/content_frame"
+        else
+          redirect_back fallback_location: root_path, notice: "Added to cart"
+        end
+      end
+    end
   end
 
   def remove
@@ -14,12 +24,31 @@ class CartController < ApplicationController
     else
       cart.delete(product_id)
     end
-    redirect_back fallback_location: root_path
+
+    respond_to do |format|
+      format.html do
+        case turbo_frame_request_id
+        when "cart-floating" then render partial: "cart/floating_button_frame"
+        when "cart-content"  then render partial: "cart/content_frame"
+        else
+          redirect_back fallback_location: root_path
+        end
+      end
+    end
   end
 
   def clear
     session[:cart] = {}
-    redirect_to root_path, notice: "Cart cleared"
+
+    respond_to do |format|
+      format.html do
+        if turbo_frame_request?
+          render partial: "cart/content_frame"
+        else
+          redirect_to root_path, notice: "Cart cleared"
+        end
+      end
+    end
   end
 
   def show

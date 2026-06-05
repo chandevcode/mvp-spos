@@ -14,7 +14,7 @@
   <% if @products.any? %>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
       <% @products.each do |product| %>
-        <%= button_to add_to_cart_path(product), method: :post, class: "block w-full text-left group" do %>
+        <%= button_to add_to_cart_path(product), method: :post, data: { turbo_frame: "cart-floating" }, class: "block w-full text-left group" do %>
           <div class="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-emerald-500/50 transition-all duration-300 h-full flex flex-col">
             <div class="aspect-square bg-gradient-to-br from-emerald-500/20 to-zinc-900 flex items-center justify-center relative overflow-hidden">
               <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300"><%= product.category == "food" ? "🍕" : "🥤" %></div>
@@ -46,11 +46,4 @@
   <% end %>
 </div>
 
-<!-- Floating Cart Button -->
-<% if cart_count > 0 %>
-  <%= link_to cart_path, class: "fixed bottom-6 right-6 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 px-6 py-4 rounded-full shadow-2xl shadow-emerald-500/50 flex items-center gap-3 font-black text-lg transition-all active:scale-95 z-40" do %>
-    <span>🛒</span>
-    <span><%= format_currency(cart_total) %></span>
-    <span class="bg-zinc-950 text-emerald-400 w-6 h-6 rounded-full flex items-center justify-center text-sm"><%= cart_count %></span>
-  <% end %>
-<% end %>
+<%= render "cart/floating_button_frame" %>

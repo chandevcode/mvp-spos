@@ -1,0 +1,6 @@
+<% if cart_count > 0 %>
+  <%= link_to cart_path, data: { turbo_frame: "_top" }, class: "fixed bottom-6 right-6 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 px-6 py-4 rounded-full shadow-2xl shadow-emerald-500/50 flex items-center gap-3 font-black text-lg transition-all active:scale-95 z-40" do %>
+    <span><%= format_currency(cart_total) %></span>
+    <span class="bg-zinc-950 text-emerald-400 w-6 h-6 rounded-full flex items-center justify-center text-sm"><%= cart_count %></span>
+  <% end %>
+<% end %>
