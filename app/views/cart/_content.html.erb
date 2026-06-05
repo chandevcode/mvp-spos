@@ -38,13 +38,11 @@
       <span class="font-black text-emerald-400"><%= format_currency(cart_total) %></span>
     </div>
 
-    <div class="space-y-3 pt-4">
-      <div class="flex gap-3">
-        <%= button_to "Checkout", checkout_path, method: :post, data: { turbo_frame: "_top" }, class: "flex-1 bg-zinc-800 hover:bg-zinc-700 text-white py-4 rounded-xl font-black text-lg transition-all active:scale-95 border border-zinc-700" %>
-        <%= button_to "Checkout & Print", checkout_path(print: true), method: :post, data: { turbo_frame: "_top" }, class: "flex-1 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-4 rounded-xl font-black text-lg transition-all active:scale-95" %>
-      </div>
-      <%= button_to clear_cart_path, method: :delete, data: { turbo_confirm: "Clear all items?" }, class: "w-full py-3 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl font-bold transition flex items-center justify-center gap-2" do %>
-        <span>🗑️</span> Clear Cart
+    <div class="pt-4 space-y-2">
+      <%= button_to "Save", checkout_path, method: :post, data: { turbo_frame: "_top" }, class: "w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3 rounded-xl font-bold text-sm transition-all active:scale-95" %>
+      <%= button_to "Print", checkout_path(print: true), method: :post, data: { turbo_frame: "_top" }, class: "w-full bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-xl font-bold text-sm transition-all active:scale-95 border border-zinc-700" %>
+      <%= button_to clear_cart_path, method: :delete, data: { turbo_confirm: "Clear all items?" }, class: "w-full py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl font-semibold text-sm transition flex items-center justify-center gap-1.5" do %>
+        <span>🗑️</span> Clear
       <% end %>
     </div>
   </div>
