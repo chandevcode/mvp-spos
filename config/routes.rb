@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :new, :create, :destroy]
   devise_for :users
   resources :products
-  resources :transactions, only: [:show]
+  resources :transactions, only: [:show, :update]
 
   post "cart/add/:product_id", to: "cart#add", as: :add_to_cart
   post "cart/remove/:product_id", to: "cart#remove", as: :remove_from_cart
