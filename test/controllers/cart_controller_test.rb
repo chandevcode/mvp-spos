@@ -38,10 +38,11 @@ class CartControllerTest < ActionDispatch::IntegrationTest
     post add_to_cart_url(@product)
     
     assert_difference "Transaction.count", 1 do
-      post checkout_url(print: true)
+      post checkout_url(print: true, payment_method: "qris")
     end
     
     transaction = Transaction.last
+    assert_equal "qris", transaction.payment_method
     assert_redirected_to transaction_path(transaction)
     assert_equal "Order completed successfully!", flash[:notice]
     assert_empty session[:cart]
@@ -51,9 +52,11 @@ class CartControllerTest < ActionDispatch::IntegrationTest
     post add_to_cart_url(@product)
     
     assert_difference "Transaction.count", 1 do
-      post checkout_url
+      post checkout_url(payment_method: "cash")
     end
     
+    transaction = Transaction.last
+    assert_equal "cash", transaction.payment_method
     assert_redirected_to root_path
     assert_equal "Order completed successfully!", flash[:notice]
     assert_empty session[:cart]

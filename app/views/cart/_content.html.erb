@@ -39,8 +39,24 @@
     </div>
 
     <div class="pt-4 space-y-2">
-      <%= button_to "Save", checkout_path, method: :post, data: { turbo_frame: "_top" }, class: "w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3 rounded-xl font-bold text-sm transition-all active:scale-95" %>
-      <%= button_to "Print", checkout_path(print: true), method: :post, data: { turbo_frame: "_top" }, class: "w-full bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-xl font-bold text-sm transition-all active:scale-95 border border-zinc-700" %>
+      <%= form_with url: checkout_path, data: { turbo_frame: "_top" }, class: "space-y-4" do |f| %>
+        <div class="grid grid-cols-3 gap-2">
+          <% ["qris", "cash", "transfer"].each do |method| %>
+            <div class="relative">
+              <%= f.radio_button :payment_method, method, id: "payment_#{method}", class: "peer hidden", checked: (method == "qris") %>
+              <%= f.label "payment_#{method}", method.capitalize, class: "peer-checked:border-emerald-500 peer-checked:text-emerald-500 border-2 border-zinc-700 bg-zinc-800 text-zinc-400 hover:border-zinc-500 py-2 rounded-lg font-bold text-center cursor-pointer transition block" %>
+            </div>
+          <% end %>
+        </div>
+        
+        <div class="space-y-2">
+          <%= f.submit "Save", name: "commit", class: "w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3 rounded-xl font-bold text-sm transition-all active:scale-95 cursor-pointer" %>
+          <button type="submit" name="print" value="true" class="w-full bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-xl font-bold text-sm transition-all active:scale-95 border border-zinc-700 cursor-pointer">
+            Print
+          </button>
+        </div>
+
+      <% end %>
       <%= button_to clear_cart_path, method: :delete, data: { turbo_confirm: "Clear all items?" }, class: "w-full py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl font-semibold text-sm transition flex items-center justify-center gap-1.5" do %>
         <span>🗑️</span> Clear
       <% end %>

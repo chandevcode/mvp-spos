@@ -57,7 +57,8 @@ class CartController < ApplicationController
   def checkout
     transaction = current_user.transactions.create!(
       total_price: cart_total,
-      status: :success
+      status: :success,
+      payment_method: params[:payment_method]
     )
 
     cart.each do |product_id, quantity|
