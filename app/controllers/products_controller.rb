@@ -64,7 +64,7 @@ class ProductsController < ApplicationController
     end
 
     def product_params
-      params.expect(product: [ :name, :description, :price, :category, :image ])
+      params.expect(product: [ :name, :description, :price, :category, :image, :stock_quantity ])
     end
 
     def attach_image_from_gallery

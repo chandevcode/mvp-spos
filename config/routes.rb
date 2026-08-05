@@ -7,6 +7,13 @@ Rails.application.routes.draw do
   resources :products
   resources :transactions, only: [ :show, :update ]
 
+  resources :inventory, only: [ :index ] do
+    member do
+      patch :update_stock
+      patch :set_stock
+    end
+  end
+
   post "cart/add/:product_id", to: "cart#add", as: :add_to_cart
   post "cart/remove/:product_id", to: "cart#remove", as: :remove_from_cart
   delete "cart/clear", to: "cart#clear", as: :clear_cart

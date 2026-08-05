@@ -3,7 +3,35 @@ class CartController < ApplicationController
 
   def add
     product_id = params[:product_id]
-    cart[product_id] = cart[product_id].to_i + 1
+    product = Product.find_by(id: product_id)
+
+    unless product&.in_stock?
+      respond_to do |format|
+        format.html do
+          if turbo_frame_request?
+            render partial: "cart/floating_button_frame"
+          else
+            redirect_back fallback_location: root_path, alert: "#{product&.name || 'Product'} is out of stock"
+          end
+        end
+      end and return
+    end
+
+    current_qty = cart[product_id].to_i
+
+    if current_qty >= product.stock_quantity
+      respond_to do |format|
+        format.html do
+          if turbo_frame_request?
+            render partial: "cart/floating_button_frame"
+          else
+            redirect_back fallback_location: root_path, alert: "Not enough stock available for #{product.name}"
+          end
+        end
+      end and return
+    end
+
+    cart[product_id] = current_qty + 1
 
     respond_to do |format|
       format.html do
@@ -55,6 +83,14 @@ class CartController < ApplicationController
   end
 
   def checkout
+    # Validate stock before finalizing
+    cart.each do |product_id, quantity|
+      product = Product.find_by(id: product_id)
+      unless product && product.stock_quantity >= quantity
+        redirect_to cart_path, alert: "#{product&.name || 'Product'} has insufficient stock. Please update your cart." and return
+      end
+    end
+
     transaction = current_user.transactions.create!(
       total_price: cart_total,
       status: :success,

@@ -16,6 +16,8 @@ class DashboardController < ApplicationController
     @total_revenue = Transaction.where(created_at: @start_date.beginning_of_day..@end_date.end_of_day).success.sum(:total_price)
     
     @all_transactions = Transaction.where(created_at: @start_date.beginning_of_day..@end_date.end_of_day)
+    @low_stock_products = Product.low_stock.order(:stock_quantity)
+    @out_of_stock_products = Product.out_of_stock.order(:name)
   end
 
   private

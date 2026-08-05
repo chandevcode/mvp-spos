@@ -31,6 +31,12 @@
   </div>
 
   <div>
+    <%= form.label :stock_quantity, class: "block text-sm font-bold text-zinc-400 mb-2" %>
+    <%= form.number_field :stock_quantity, min: 0, class: "w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+    <p class="text-xs text-zinc-500 mt-1">Set to 0 to mark as out of stock</p>
+  </div>
+
+  <div>
     <%= form.label :image, class: "block text-sm font-bold text-zinc-400 mb-2" %>
     <%= form.file_field :image, accept: "image/*", class: "w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-emerald-500 file:text-zinc-950 hover:file:bg-emerald-400 transition cursor-pointer" %>
     <% if product.image.attached? %>

@@ -37,6 +37,7 @@
           <% if user_signed_in? %>
             <% if current_user.admin? || current_user.owner? %>
               <%= link_to "Products", products_path, class: "text-sm font-semibold text-zinc-400 hover:text-zinc-50 transition" %>
+              <%= link_to "Inventory", inventory_index_path, class: "text-sm font-semibold text-zinc-400 hover:text-zinc-50 transition" %>
             <% end %>
             <% if current_user.owner? %>
               <%= link_to "Dashboard", dashboard_path, class: "text-sm font-semibold text-zinc-400 hover:text-zinc-50 transition" %>
@@ -67,6 +68,7 @@
           <% if user_signed_in? %>
             <% if current_user.admin? || current_user.owner? %>
               <%= link_to "Products", products_path, class: "block px-4 py-2 text-sm font-semibold text-zinc-400 hover:text-zinc-50 hover:bg-zinc-800 rounded-lg transition" %>
+              <%= link_to "Inventory", inventory_index_path, class: "block px-4 py-2 text-sm font-semibold text-zinc-400 hover:text-zinc-50 hover:bg-zinc-800 rounded-lg transition" %>
             <% end %>
             <% if current_user.owner? %>
               <%= link_to "Dashboard", dashboard_path, class: "block px-4 py-2 text-sm font-semibold text-zinc-400 hover:text-zinc-50 hover:bg-zinc-800 rounded-lg transition" %>

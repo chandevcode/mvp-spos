@@ -14,29 +14,86 @@
   <% if @products.any? %>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
       <% @products.each do |product| %>
-        <%= button_to add_to_cart_path(product), method: :post, data: { turbo_frame: "cart-floating" }, class: "block w-full text-left group" do %>
-          <div class="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-emerald-500/50 transition-all duration-300 h-full flex flex-col">
-            <div class="aspect-square bg-gradient-to-br from-emerald-500/20 to-zinc-900 flex items-center justify-center relative overflow-hidden">
-              <% if product.image.attached? %>
-                <%= image_tag product.image, class: "w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300" %>
-              <% else %>
-                <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300"><%= product.category == "food" ? "🍕" : "🥤" %></div>
-              <% end %>
-              <div class="absolute inset-0 bg-emerald-500/0 group-active:bg-emerald-500/10 transition-colors"></div>
-            </div>
-            <div class="p-3 flex-1 flex flex-col justify-between">
-              <div>
-                <h3 class="font-bold text-sm mb-1 truncate group-hover:text-emerald-400 transition-colors"><%= product.name %></h3>
-                <p class="text-xs text-zinc-500 mb-2 truncate"><%= product.description %></p>
+        <% if product.out_of_stock? %>
+          <div class="block w-full text-left group opacity-60 cursor-not-allowed">
+            <div class="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden h-full flex flex-col relative">
+              <div class="absolute inset-0 bg-zinc-950/50 z-10 flex items-center justify-center">
+                <span class="bg-red-500/90 text-white px-3 py-1 rounded-full text-xs font-bold">Out of Stock</span>
               </div>
-              <div class="flex items-center justify-between mt-auto">
-                <span class="text-emerald-400 font-black text-lg"><%= format_currency(product.price) %></span>
-                <div class="bg-emerald-500 group-hover:bg-emerald-400 text-zinc-950 w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all group-active:scale-95">
-                  +
+              <div class="aspect-square bg-gradient-to-br from-emerald-500/20 to-zinc-900 flex items-center justify-center relative overflow-hidden">
+                <% if product.image.attached? %>
+                  <%= image_tag product.image, class: "w-full h-full object-cover" %>
+                <% else %>
+                  <div class="text-4xl"><%= product.category == "food" ? "🍕" : "🥤" %></div>
+                <% end %>
+              </div>
+              <div class="p-3 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 class="font-bold text-sm mb-1 truncate"><%= product.name %></h3>
+                  <p class="text-xs text-zinc-500 mb-2 truncate"><%= product.description %></p>
+                </div>
+                <div class="flex items-center justify-between mt-auto">
+                  <span class="text-emerald-400 font-black text-lg"><%= format_currency(product.price) %></span>
+                  <div class="bg-zinc-700 text-zinc-500 w-8 h-8 rounded-full flex items-center justify-center font-bold">
+                    +
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+        <% elsif product.low_stock? %>
+          <%= button_to add_to_cart_path(product), method: :post, data: { turbo_frame: "cart-floating" }, class: "block w-full text-left group" do %>
+            <div class="bg-zinc-900 border border-amber-500/30 rounded-2xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 h-full flex flex-col relative">
+              <div class="absolute top-2 right-2 z-10 bg-amber-500/90 text-white px-2 py-0.5 rounded-full text-xs font-bold">
+                <%= product.stock_quantity %> left
+              </div>
+              <div class="aspect-square bg-gradient-to-br from-emerald-500/20 to-zinc-900 flex items-center justify-center relative overflow-hidden">
+                <% if product.image.attached? %>
+                  <%= image_tag product.image, class: "w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300" %>
+                <% else %>
+                  <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300"><%= product.category == "food" ? "🍕" : "🥤" %></div>
+                <% end %>
+                <div class="absolute inset-0 bg-emerald-500/0 group-active:bg-emerald-500/10 transition-colors"></div>
+              </div>
+              <div class="p-3 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 class="font-bold text-sm mb-1 truncate group-hover:text-amber-400 transition-colors"><%= product.name %></h3>
+                  <p class="text-xs text-zinc-500 mb-2 truncate"><%= product.description %></p>
+                </div>
+                <div class="flex items-center justify-between mt-auto">
+                  <span class="text-emerald-400 font-black text-lg"><%= format_currency(product.price) %></span>
+                  <div class="bg-amber-500 group-hover:bg-amber-400 text-zinc-950 w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all group-active:scale-95">
+                    +
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <%= button_to add_to_cart_path(product), method: :post, data: { turbo_frame: "cart-floating" }, class: "block w-full text-left group" do %>
+            <div class="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-emerald-500/50 transition-all duration-300 h-full flex flex-col">
+              <div class="aspect-square bg-gradient-to-br from-emerald-500/20 to-zinc-900 flex items-center justify-center relative overflow-hidden">
+                <% if product.image.attached? %>
+                  <%= image_tag product.image, class: "w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300" %>
+                <% else %>
+                  <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300"><%= product.category == "food" ? "🍕" : "🥤" %></div>
+                <% end %>
+                <div class="absolute inset-0 bg-emerald-500/0 group-active:bg-emerald-500/10 transition-colors"></div>
+              </div>
+              <div class="p-3 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 class="font-bold text-sm mb-1 truncate group-hover:text-emerald-400 transition-colors"><%= product.name %></h3>
+                  <p class="text-xs text-zinc-500 mb-2 truncate"><%= product.description %></p>
+                </div>
+                <div class="flex items-center justify-between mt-auto">
+                  <span class="text-emerald-400 font-black text-lg"><%= format_currency(product.price) %></span>
+                  <div class="bg-emerald-500 group-hover:bg-emerald-400 text-zinc-950 w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all group-active:scale-95">
+                    +
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
         <% end %>
       <% end %>
     </div>
