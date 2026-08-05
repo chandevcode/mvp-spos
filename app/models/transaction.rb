@@ -1,4 +1,6 @@
 class Transaction < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   belongs_to :user
   has_many :transaction_items, dependent: :destroy
   has_many :products, through: :transaction_items

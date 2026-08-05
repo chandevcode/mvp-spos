@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :authorize_owner
   before_action :authenticate_user!
+  before_action :authorize_owner
 
   def index
     @users = User.order(created_at: :desc)
@@ -11,8 +11,8 @@ class UsersController < ApplicationController
   end
 
   def create
-    if user_params[:role] == "admin" && User.admin.count >= 2
-      redirect_to users_path, alert: "Maximum 2 admin users allowed"
+    if user_params[:role] == "admin" && User.admin.count >= 10
+      redirect_to users_path, alert: "Maximum 10 admin users allowed"
       return
     end
 

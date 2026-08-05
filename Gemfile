@@ -76,5 +76,5 @@ group :test do
 end
 
 gem "dockerfile-rails", ">= 1.7", group: :development
-
+gem "acts_as_tenant"
 gem "litestream", "~> 0.14.0"

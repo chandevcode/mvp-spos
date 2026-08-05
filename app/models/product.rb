@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   has_one_attached :image
 
   enum :category, { food: 0, beverage: 1 }

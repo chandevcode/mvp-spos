@@ -1,13 +1,17 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  tenant: one
   name: Product One
   description: MyText
   price: 15000
+  stock_quantity: 10
   category: 1
 
 two:
+  tenant: one
   name: Product Two
   description: MyText
   price: 25000
+  stock_quantity: 10
   category: 1
