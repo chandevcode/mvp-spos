@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <h1>Thank you for your purchase, <%= @user.email %>!</h1>
+
+    <p>Your order <strong>#<%= @transaction.id %></strong> has been completed successfully.</p>
+
+    <h2>Order Summary</h2>
+
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+      <thead>
+        <tr style="background-color: #f3f4f6; text-align: left;">
+          <th style="padding: 10px; border-bottom: 2px solid #e5e7eb;">Product</th>
+          <th style="padding: 10px; border-bottom: 2px solid #e5e7eb;">Qty</th>
+          <th style="padding: 10px; border-bottom: 2px solid #e5e7eb;">Price</th>
+          <th style="padding: 10px; border-bottom: 2px solid #e5e7eb;">Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @items.each do |item| %>
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;"><%= item.product.name %></td>
+            <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;"><%= item.quantity %></td>
+            <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;"><%= number_to_currency(item.price) %></td>
+            <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;"><%= number_to_currency(item.price * item.quantity) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" style="padding: 10px; text-align: right; font-weight: bold;">Total:</td>
+          <td style="padding: 10px; font-weight: bold;"><%= number_to_currency(@transaction.total_price) %></td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <p><strong>Payment Method:</strong> <%= @transaction.payment_method&.titleize || "N/A" %></p>
+    <p><strong>Date:</strong> <%= l(@transaction.created_at, format: :long) %></p>
+
+    <p>Thank you for shopping with us!</p>
+  </body>
+</html>

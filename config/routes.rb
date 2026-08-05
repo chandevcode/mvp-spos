@@ -20,6 +20,19 @@ Rails.application.routes.draw do
   get "cart", to: "cart#show", as: :cart
   post "cart/checkout", to: "cart#checkout", as: :checkout
 
+  # Registration with subscription payment
+  # IMPORTANT: static paths must come BEFORE the dynamic :plan route
+  get "register", to: "registrations#choose_plan", as: :register
+  post "register", to: "registrations#create"
+  get "register/payment/:id", to: "registrations#payment", as: :register_payment
+  get "register/payment_status/:id", to: "registrations#payment_status", as: :register_payment_status
+  get "register/success", to: "registrations#success", as: :register_success
+  get "register/:plan", to: "registrations#new", as: :register_plan,
+      constraints: { plan: /monthly|annual/ }
+
+  # Midtrans webhook
+  post "midtrans/webhook", to: "midtrans/webhooks#notification"
+
   root "home#index"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

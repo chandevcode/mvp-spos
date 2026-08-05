@@ -1,0 +1,98 @@
+<div class="min-h-screen flex items-center justify-center px-4">
+    <div class="w-full max-w-md text-center">
+      <div class="mb-8">
+        <%= link_to root_path, class: "inline-block" do %>
+          <h1 class="text-5xl font-black tracking-tighter text-emerald-400 mb-2">SPOS</h1>
+        <% end %>
+        <p class="text-zinc-400 font-semibold">Complete your payment</p>
+      </div>
+
+      <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 mb-6">
+        <div class="mb-6">
+          <p class="text-zinc-500 text-sm mb-1">Plan</p>
+          <p class="text-xl font-bold"><%= @subscription_payment.plan_label %></p>
+        </div>
+
+        <div class="mb-6">
+          <p class="text-zinc-500 text-sm mb-1">Total Payment</p>
+          <p class="text-3xl font-black text-emerald-400"><%= @subscription_payment.formatted_amount %></p>
+        </div>
+
+        <div class="mb-6">
+          <p class="text-zinc-500 text-sm mb-1">Account</p>
+          <p class="text-zinc-300 font-semibold"><%= @subscription_payment.email %></p>
+        </div>
+
+        <div id="midtrans-snap-container" class="mt-6">
+          <button id="pay-button" class="w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3 rounded-xl font-bold transition-all active:scale-95 cursor-pointer">
+            Pay Now
+          </button>
+        </div>
+
+        <div class="mt-4 p-3 bg-zinc-950 rounded-xl">
+          <p class="text-xs text-zinc-500">
+            🔒 Secured by Midtrans. We accept various payment methods including
+            credit/debit cards, bank transfers, e-wallets (GoPay, OVO, DANA, LinkAja),
+            and convenience stores.
+          </p>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <p class="text-zinc-500 text-sm">
+          <%= link_to "Cancel", root_path, class: "text-zinc-400 hover:text-zinc-300 font-semibold transition" %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Midtrans Snap.js -->
+  <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+          data-client-key="<%= Rails.application.credentials.dig(:midtrans, :client_key) || ENV['MIDTRANS_CLIENT_KEY'] %>"></script>
+  <script>
+    document.getElementById('pay-button').onclick = function () {
+      snap.pay('<%= @subscription_payment.snap_token %>', {
+        onSuccess: function (result) {
+          // Check payment status by calling our server
+          checkPaymentStatus();
+        },
+        onPending: function (result) {
+          checkPaymentStatus();
+        },
+        onError: function (result) {
+          alert('Payment failed. Please try again.');
+          window.location.href = '<%= register_path %>';
+        },
+        onClose: function () {
+          // User closed the popup without finishing payment
+        }
+      });
+    };
+
+    function checkPaymentStatus() {
+      var checkInterval = setInterval(function () {
+        fetch('<%= register_payment_status_path(@subscription_payment) %>')
+          .then(function (response) { return response.json(); })
+          .then(function (data) {
+            if (data.status === 'success') {
+              clearInterval(checkInterval);
+              window.location.href = '<%= register_success_path(email: @subscription_payment.email) %>';
+            } else if (data.status === 'failed' || data.status === 'expired') {
+              clearInterval(checkInterval);
+              alert('Payment failed. Please try again.');
+              window.location.href = '<%= register_path %>';
+            }
+          })
+          .catch(function () {
+            // Continue polling
+          });
+      }, 2000);
+
+      // Timeout after 2 minutes - redirect to login with helpful message
+      setTimeout(function () {
+        clearInterval(checkInterval);
+        window.location.href = '<%= new_user_session_path %>';
+        alert('Payment is being processed. Please try signing in with your credentials.');
+      }, 120000);
+    }
+  </script>

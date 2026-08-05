@@ -6,8 +6,29 @@ class User < ApplicationRecord
 
   acts_as_tenant(:tenant)
 
-  enum :role, { admin: 0, owner: 1 }, default: :admin
+  enum :role, { admin: 0, owner: 1 }, default: :owner
 
   belongs_to :tenant
   has_many :transactions, dependent: :destroy
+
+  attr_accessor :skip_password_validation
+
+  validates :role, presence: true
+  validate :tenant_admin_limit, on: :create, if: :admin?
+
+  def password_required?
+    return false if skip_password_validation
+    super
+  end
+
+  private
+
+  def tenant_admin_limit
+    return unless tenant
+
+    admin_count = tenant.users.admin.count
+    if admin_count >= 2
+      errors.add(:role, "limit reached. Each tenant can have a maximum of 2 staff/admin users.")
+    end
+  end
 end

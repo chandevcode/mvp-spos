@@ -107,6 +107,9 @@ class CartController < ApplicationController
     end
 
     session[:cart] = {}
+
+    UserMailer.purchase_confirmation(current_user, transaction).deliver_later
+
     if params[:print] == "true"
       redirect_to transaction_path(transaction), notice: "Order completed successfully!"
     else

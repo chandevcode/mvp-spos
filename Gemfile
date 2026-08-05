@@ -67,6 +67,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "letter_opener"
 end
 
 group :test do
@@ -78,3 +79,5 @@ end
 gem "dockerfile-rails", ">= 1.7", group: :development
 gem "acts_as_tenant"
 gem "litestream", "~> 0.14.0"
+
+gem "veritrans", "~> 2.4"

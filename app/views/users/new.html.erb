@@ -24,10 +24,8 @@
       </div>
 
       <div>
-        <%= f.label :role, class: "block text-sm font-bold text-zinc-400 mb-2" %>
-        <%= f.select :role, [["Admin", "admin"], ["Owner", "owner"]], {}, class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+        <%= f.hidden_field :role, value: "admin" %>
       </div>
-
       <div>
         <%= f.label :password, class: "block text-sm font-bold text-zinc-400 mb-2" %>
         <%= f.password_field :password, class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>

@@ -50,6 +50,7 @@
 
 
           <% else %>
+            <%= link_to "Register", register_path, class: "text-sm font-semibold text-zinc-400 hover:text-zinc-50 transition" %>
             <%= link_to "Login", new_user_session_path, class: "text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition" %>
           <% end %>
         </div>
@@ -79,6 +80,7 @@
               data: {turbo_method: :delete},
               class: "w-full text-left px-4 py-2 text-sm font-semibold text-zinc-400 hover:text-zinc-50 hover:bg-zinc-800 rounded-lg transition" %>
           <% else %>
+            <%= link_to "Register", register_path, class: "block px-4 py-2 text-sm font-semibold text-zinc-400 hover:text-zinc-50 hover:bg-zinc-800 rounded-lg transition" %>
             <%= link_to "Login", new_user_session_path, class: "block px-4 py-2 text-sm font-semibold text-emerald-400 hover:text-emerald-300 hover:bg-zinc-800 rounded-lg transition" %>
           <% end %>
         </div>

@@ -1,0 +1,57 @@
+<div class="min-h-screen flex items-center justify-center px-4 py-8">
+    <div class="w-full max-w-md">
+      <div class="text-center mb-8">
+        <%= link_to register_path, class: "inline-block" do %>
+          <h1 class="text-5xl font-black tracking-tighter text-emerald-400 mb-2">SPOS</h1>
+        <% end %>
+        <p class="text-zinc-400 font-semibold">
+          <%= @plan_type == "monthly" ? "📆 Monthly" : "🌟 Annual" %> Plan
+          <span class="text-emerald-400">• Rp <%= @plan_type == "monthly" ? "100.000" : "1.000.000" %></span>
+        </p>
+        <%= link_to "Change plan", register_path, class: "text-xs text-zinc-500 hover:text-zinc-400 transition mt-1 inline-block" %>
+      </div>
+
+      <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
+        <%= form_with url: register_path, method: :post, class: "space-y-5", local: true do |f| %>
+          <%= hidden_field_tag :plan_type, @plan_type %>
+
+          <div>
+            <%= label_tag :tenant_name, "Restaurant / Business Name", class: "block text-sm font-bold text-zinc-400 mb-2" %>
+            <%= text_field_tag :tenant_name, params[:tenant_name], placeholder: "Warung Makan Sederhana", class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+          </div>
+
+          <div>
+            <%= label_tag :email, "Email", class: "block text-sm font-bold text-zinc-400 mb-2" %>
+            <%= email_field_tag :email, params[:email], autofocus: true, autocomplete: "email", placeholder: "you@example.com", class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+          </div>
+
+          <div>
+            <%= label_tag :password, "Password", class: "block text-sm font-bold text-zinc-400 mb-2" %>
+            <%= password_field_tag :password, nil, autocomplete: "new-password", class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+            <p class="text-xs text-zinc-500 mt-1">Minimum 6 characters</p>
+          </div>
+
+          <div>
+            <%= label_tag :password_confirmation, "Confirm Password", class: "block text-sm font-bold text-zinc-400 mb-2" %>
+            <%= password_field_tag :password_confirmation, nil, autocomplete: "new-password", class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+          </div>
+
+          <div class="pt-2">
+            <%= f.submit "Continue to Payment", class: "w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3 rounded-xl font-bold transition-all active:scale-95 cursor-pointer" %>
+          </div>
+
+          <p class="text-xs text-zinc-500 text-center pt-2">
+            By continuing, you agree to our Terms of Service and Privacy Policy.
+            Payment will be processed securely via Midtrans.
+          </p>
+        <% end %>
+      </div>
+
+      <div class="text-center mt-6">
+        <p class="text-zinc-500 text-sm">
+          Already have an account?
+          <%= link_to "Sign in", new_user_session_path, class: "text-emerald-400 hover:text-emerald-300 font-semibold transition" %>
+        </p>
+      </div>
+    </div>
+  </div>

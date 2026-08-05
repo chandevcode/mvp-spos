@@ -11,11 +11,6 @@ class UsersController < ApplicationController
   end
 
   def create
-    if user_params[:role] == "admin" && User.admin.count >= 10
-      redirect_to users_path, alert: "Maximum 10 admin users allowed"
-      return
-    end
-
     @user = User.new(user_params)
 
     if @user.save
