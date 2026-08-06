@@ -2,6 +2,10 @@ class TransactionsController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_owner
 
+  def show
+    @transaction = Transaction.find(params[:id])
+  end
+
   def update
     @transaction = Transaction.find(params[:id])
     if @transaction.update(status: :canceled)
@@ -14,6 +18,6 @@ class TransactionsController < ApplicationController
   private
 
   def authorize_owner
-    redirect_to root_path, alert: "Access denied" unless current_user.owner?
+    redirect_to root_path, alert: "Access denied" unless current_user&.owner?
   end
 end
