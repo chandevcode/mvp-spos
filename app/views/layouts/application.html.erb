@@ -43,7 +43,8 @@
               <%= link_to "Dashboard", dashboard_path, class: "text-sm font-semibold text-zinc-400 hover:text-zinc-50 transition" %>
               <%= link_to "Users", users_path, class: "text-sm font-semibold text-zinc-400 hover:text-zinc-50 transition" %>
             <% end %>
-<%= link_to "Logout", 
+            <%= link_to "Profile", edit_profile_path, class: "text-sm font-semibold text-zinc-400 hover:text-zinc-50 transition" %>
+            <%= link_to "Logout", 
               destroy_user_session_path, 
               data: {turbo_method: :delete},
               class: "w-full text-left px-4 py-2 text-sm font-semibold text-zinc-400 hover:text-zinc-50 hover:bg-zinc-800 rounded-lg transition" %>
@@ -75,6 +76,7 @@
               <%= link_to "Dashboard", dashboard_path, class: "block px-4 py-2 text-sm font-semibold text-zinc-400 hover:text-zinc-50 hover:bg-zinc-800 rounded-lg transition" %>
               <%= link_to "Users", users_path, class: "block px-4 py-2 text-sm font-semibold text-zinc-400 hover:text-zinc-50 hover:bg-zinc-800 rounded-lg transition" %>
             <% end %>
+            <%= link_to "Profile", edit_profile_path, class: "block px-4 py-2 text-sm font-semibold text-zinc-400 hover:text-zinc-50 hover:bg-zinc-800 rounded-lg transition" %>
             <%= link_to "Logout", 
               destroy_user_session_path, 
               data: {turbo_method: :delete},
@@ -106,6 +108,41 @@
             <p class="text-red-400 text-sm font-semibold"><%= alert %></p>
           </div>
         <% end %>
+      </div>
+    <% end %>
+
+    <!-- Subscription Expired Banner -->
+    <% if flash[:subscription_expired] %>
+      <div class="bg-red-500/10 border-b border-red-500/20 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="text-xl">⚠️</span>
+            <div>
+              <p class="text-red-400 text-sm font-bold">Your subscription has expired</p>
+              <p class="text-red-400/70 text-xs">Extend your subscription to continue using all SPOS features.</p>
+            </div>
+          </div>
+          <%= link_to "Extend Now", extend_subscription_path, class: "shrink-0 bg-red-500 hover:bg-red-400 text-white px-4 py-1.5 rounded-lg text-sm font-bold transition-all active:scale-95" %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Subscription Expiring Soon Banner -->
+    <% if flash[:subscription_expiring] %>
+      <% days_left = flash[:subscription_expiring] %>
+      <div class="bg-amber-500/10 border-b border-amber-500/20 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="text-xl">⏳</span>
+            <div>
+              <p class="text-amber-400 text-sm font-bold">
+                Your subscription expires in <%= days_left %> <%= days_left == 1 ? 'day' : 'days' %>
+              </p>
+              <p class="text-amber-400/70 text-xs">Extend now to avoid interruption.</p>
+            </div>
+          </div>
+          <%= link_to "Extend Now", extend_subscription_path, class: "shrink-0 bg-amber-500 hover:bg-amber-400 text-zinc-950 px-4 py-1.5 rounded-lg text-sm font-bold transition-all active:scale-95" %>
+        </div>
       </div>
     <% end %>
 

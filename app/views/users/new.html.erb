@@ -19,6 +19,11 @@
       <% end %>
 
       <div>
+        <%= f.label :name, class: "block text-sm font-bold text-zinc-400 mb-2" %>
+        <%= f.text_field :name, class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition", placeholder: "Full name" %>
+      </div>
+
+      <div>
         <%= f.label :email, class: "block text-sm font-bold text-zinc-400 mb-2" %>
         <%= f.email_field :email, autofocus: true, class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
       </div>

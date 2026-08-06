@@ -1,0 +1,16 @@
+Welcome to <%= @tenant.name %>!
+
+Hi <%= @user.name || @user.email %>,
+
+Thank you for subscribing to SPOS. Your restaurant management system is now active and ready to use.
+
+  Restaurant:  <%= @tenant.name %>
+  Plan:        <%= @subscription.plan_label %>
+  Email:       <%= @user.email %>
+  Registered:  <%= l(@user.created_at.to_date, format: :long) %>
+
+Sign in here: <%= new_user_session_url %>
+
+If you have any questions, feel free to reach out to our support team.
+
+— The SPOS Team

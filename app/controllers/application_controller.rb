@@ -11,6 +11,19 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def check_subscription
+    return unless user_signed_in?
+
+    tenant = current_user.tenant
+    return unless tenant
+
+    if tenant.expired? || (tenant.subscription_expires_at.present? && tenant.subscription_expires_at < Time.current)
+      flash.now[:subscription_expired] = true
+    elsif tenant.days_until_expiry <= 7 && tenant.days_until_expiry >= 0
+      flash.now[:subscription_expiring] = tenant.days_until_expiry
+    end
+  end
+
   def set_tenant
     tenant = if current_user
                current_user.tenant

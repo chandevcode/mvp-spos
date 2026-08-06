@@ -27,16 +27,22 @@
       <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between">
         <div>
           <div class="flex items-center gap-2 mb-1">
-            <p class="font-bold text-lg"><%= user.email %></p>
+            <p class="font-bold text-lg"><%= user.name.present? ? user.name : user.email %></p>
             <span class="text-xs px-2 py-0.5 rounded-full font-semibold <%= user.owner? ? 'bg-purple-500/20 text-purple-400' : 'bg-emerald-500/20 text-emerald-400' %>"><%= user.role %></span>
           </div>
+          <p class="text-sm text-zinc-400"><%= user.email %></p>
           <p class="text-sm text-zinc-500">Created <%= user.created_at.strftime("%b %d, %Y") %></p>
         </div>
-        <% unless user == current_user %>
-          <%= button_to user_path(user), method: :delete, data: { turbo_confirm: "Delete this user?" }, class: "w-10 h-10 bg-red-500/10 hover:bg-red-500/20 rounded-xl flex items-center justify-center transition" do %>
-            <span class="text-lg">🗑️</span>
+        <div class="flex items-center gap-2">
+          <%= link_to edit_user_path(user), class: "w-10 h-10 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center justify-center transition" do %>
+            <span class="text-lg">✏️</span>
           <% end %>
-        <% end %>
+          <% unless user == current_user || user.owner? %>
+            <%= button_to user_path(user), method: :delete, data: { turbo_confirm: "Delete this user?" }, class: "w-10 h-10 bg-red-500/10 hover:bg-red-500/20 rounded-xl flex items-center justify-center transition" do %>
+              <span class="text-lg">🗑️</span>
+            <% end %>
+          <% end %>
+        </div>
       </div>
     <% end %>
 

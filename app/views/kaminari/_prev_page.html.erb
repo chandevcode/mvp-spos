@@ -1,0 +1,7 @@
+<% if current_page.first? %>
+  <span class="w-10 h-10 bg-zinc-900/50 border border-zinc-800/50 text-zinc-700 rounded-xl flex items-center justify-center text-sm font-bold cursor-not-allowed">&larr;</span>
+<% else %>
+  <%= link_to url, class: "w-10 h-10 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-50 rounded-xl flex items-center justify-center text-sm font-bold transition-all", rel: "prev", aria: { label: "Previous page" } do %>
+    &larr;
+  <% end %>
+<% end %>

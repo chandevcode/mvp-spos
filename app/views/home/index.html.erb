@@ -1,12 +1,16 @@
 <div class="max-w-7xl mx-auto">
   <!-- Search & Filters -->
   <%= form_with url: root_path, method: :get, class: "mb-6 space-y-3" do |f| %>
-    <%= f.text_field :search, placeholder: "Search products...", value: params[:search], class: "w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+    <div class="flex gap-2">
+      <%= text_field_tag :search, params[:search], placeholder: "Search products...", class: "flex-1 bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+      <%= hidden_field_tag :category, params[:category] if params[:category].present? %>
+      <%= submit_tag "🔍", class: "bg-zinc-800 hover:bg-zinc-700 text-zinc-400 px-4 rounded-xl font-bold transition-all cursor-pointer" %>
+    </div>
     
     <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-      <%= link_to "All", root_path, class: "px-5 py-2 #{params[:category].blank? ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800'} rounded-full text-sm font-semibold whitespace-nowrap transition" %>
-      <%= link_to "Food", root_path(category: 'food'), class: "px-5 py-2 #{params[:category] == 'food' ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800'} rounded-full text-sm font-semibold whitespace-nowrap transition" %>
-      <%= link_to "Beverage", root_path(category: 'beverage'), class: "px-5 py-2 #{params[:category] == 'beverage' ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800'} rounded-full text-sm font-semibold whitespace-nowrap transition" %>
+      <%= link_to "All", root_path(search: params[:search]), class: "px-5 py-2 #{params[:category].blank? ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800'} rounded-full text-sm font-semibold whitespace-nowrap transition" %>
+      <%= link_to "Food", root_path(category: 'food', search: params[:search]), class: "px-5 py-2 #{params[:category] == 'food' ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800'} rounded-full text-sm font-semibold whitespace-nowrap transition" %>
+      <%= link_to "Beverage", root_path(category: 'beverage', search: params[:search]), class: "px-5 py-2 #{params[:category] == 'beverage' ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800'} rounded-full text-sm font-semibold whitespace-nowrap transition" %>
     </div>
   <% end %>
 
@@ -106,5 +110,12 @@
     </div>
   <% end %>
 </div>
+
+<!-- Pagination -->
+<% if @products.total_pages > 1 %>
+  <div class="mt-8 flex justify-center">
+    <%= paginate @products, window: 2 %>
+  </div>
+<% end %>
 
 <%= render "cart/floating_button_frame" %>

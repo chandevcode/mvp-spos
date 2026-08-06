@@ -1,0 +1,12 @@
+<%# The paginator itself - renders the page navigation %>
+<div class="flex items-center justify-center gap-1">
+  <%= prev_page_tag %>
+  <% @window.paginator.each do |page| -%>
+    <% if page.display_tag? -%>
+      <%= page_tag page %>
+    <% elsif !page.was_truncated? -%>
+      <%= gap_tag %>
+    <% end -%>
+  <% end -%>
+  <%= next_page_tag %>
+</div>

@@ -14,6 +14,10 @@ class User < ApplicationRecord
   attr_accessor :skip_password_validation
 
   validates :role, presence: true
+  validates :name, presence: true, length: { maximum: 100 }
+  validates :address, length: { maximum: 255 }, allow_blank: true
+  validates :phone_number, length: { maximum: 20 }, allow_blank: true,
+            format: { with: /\A\+?[\d\s\-()]*\z/, message: "only allows numbers, spaces, dashes, and parentheses" }
   validate :tenant_admin_limit, on: :create, if: :admin?
 
   def password_required?

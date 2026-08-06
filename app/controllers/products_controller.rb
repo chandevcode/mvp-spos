@@ -1,9 +1,11 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: %i[ show edit update destroy ]
+  before_action :check_subscription
 
   # GET /products
   def index
-    @products = Product.all
+    @q = Product.ransack(params[:q])
+    @products = @q.result.includes(:image_attachment).page(params[:page]).per(10)
   end
 
   # GET /products/1

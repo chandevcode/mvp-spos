@@ -25,6 +25,14 @@ class Product < ApplicationRecord
     stock_quantity <= 0
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[name description category price stock_quantity created_at]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    %w[image_attachment]
+  end
+
   def stock_level
     if out_of_stock?
       :out

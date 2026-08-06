@@ -1,0 +1,46 @@
+ <div class="max-w-2xl mx-auto">
+  <div class="max-w-md mx-auto text-center">
+    <div class="bg-zinc-900 border border-emerald-500/30 rounded-3xl p-8 md:p-12">
+      <div class="text-6xl mb-6">🎉</div>
+      <h1 class="text-3xl font-black mb-3">Subscription Extended!</h1>
+      <p class="text-zinc-400 mb-2">Your SPOS subscription has been successfully extended.</p>
+
+      <% if @subscription_payment&.success? %>
+        <div class="mt-4 mb-6 p-4 bg-zinc-950 rounded-xl text-left space-y-2">
+          <div class="flex justify-between text-sm">
+            <span class="text-zinc-500">Plan</span>
+            <span class="font-semibold"><%= @subscription_payment.plan_label %></span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-zinc-500">Amount</span>
+            <span class="font-semibold text-emerald-400"><%= @subscription_payment.formatted_amount %></span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-zinc-500">Payment Method</span>
+            <span class="font-semibold"><%= @subscription_payment.midtrans_payment_type&.titleize || "—" %></span>
+          </div>
+          <% if @subscription_payment.settlement_time.present? %>
+            <div class="flex justify-between text-sm">
+              <span class="text-zinc-500">Paid At</span>
+              <span class="font-semibold"><%= @subscription_payment.settlement_time.strftime("%b %d, %Y %H:%M") %></span>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div class="bg-emerald-500/10 rounded-xl p-4 mb-8">
+        <p class="text-emerald-400 text-sm font-semibold">
+          🚀 Your subscription has been extended! Continue using SPOS without interruption.
+        </p>
+      </div>
+
+      <%= link_to "Go to Profile", edit_profile_path, class: "inline-block w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3 rounded-xl font-bold transition-all active:scale-95" %>
+    </div>
+
+    <div class="mt-6">
+      <p class="text-zinc-500 text-sm">
+        <%= link_to "Back to Home", root_path, class: "text-zinc-400 hover:text-zinc-300 font-semibold transition" %>
+      </p>
+    </div>
+  </div>
+</div>

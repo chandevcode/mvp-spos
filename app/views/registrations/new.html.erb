@@ -12,28 +12,68 @@
       </div>
 
       <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
-        <%= form_with url: register_path, method: :post, class: "space-y-5", local: true do |f| %>
+        <%= form_with url: register_path, method: :post, class: "space-y-5", local: true,
+              data: {
+                controller: "form-validator",
+                action: "submit->form-validator#validateAll"
+              } do |f| %>
           <%= hidden_field_tag :plan_type, @plan_type %>
 
-          <div>
+          <div data-form-validator-target="group">
             <%= label_tag :tenant_name, "Restaurant / Business Name", class: "block text-sm font-bold text-zinc-400 mb-2" %>
-            <%= text_field_tag :tenant_name, params[:tenant_name], placeholder: "Warung Makan Sederhana", class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+            <%= text_field_tag :tenant_name, params[:tenant_name], autofocus: true, placeholder: "Warung Makan Sederhana",
+                  data: { form_validator_target: "input", validate: "required", action: "blur->form-validator#validate" },
+                  class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+            <p data-form-validator-target="message" class="text-xs mt-1 hidden"></p>
           </div>
 
-          <div>
+          <div data-form-validator-target="group">
+            <%= label_tag :name, "Owner Name", class: "block text-sm font-bold text-zinc-400 mb-2" %>
+            <%= text_field_tag :name, params[:name], placeholder: "John Doe",
+                  data: { form_validator_target: "input", validate: "required", action: "blur->form-validator#validate" },
+                  class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+            <p data-form-validator-target="message" class="text-xs mt-1 hidden"></p>
+          </div>
+
+          <div data-form-validator-target="group">
+            <%= label_tag :address, "Address", class: "block text-sm font-bold text-zinc-400 mb-2" %>
+            <%= text_area_tag :address, params[:address], placeholder: "Jl. Merdeka No. 123, Jakarta", rows: 2,
+                  data: { form_validator_target: "input", action: "blur->form-validator#validate" },
+                  class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition resize-none" %>
+            <p data-form-validator-target="message" class="text-xs mt-1 hidden"></p>
+          </div>
+
+          <div data-form-validator-target="group">
+            <%= label_tag :phone_number, "Phone Number", class: "block text-sm font-bold text-zinc-400 mb-2" %>
+            <%= telephone_field_tag :phone_number, params[:phone_number], placeholder: "+62 812-3456-7890",
+                  data: { form_validator_target: "input", validate: "phone", action: "blur->form-validator#validate" },
+                  class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+            <p data-form-validator-target="message" class="text-xs mt-1 hidden"></p>
+          </div>
+
+          <div data-form-validator-target="group">
             <%= label_tag :email, "Email", class: "block text-sm font-bold text-zinc-400 mb-2" %>
-            <%= email_field_tag :email, params[:email], autofocus: true, autocomplete: "email", placeholder: "you@example.com", class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+            <%= email_field_tag :email, params[:email], autocomplete: "email", placeholder: "you@example.com",
+                  data: { form_validator_target: "input", validate: "required", action: "blur->form-validator#checkEmail" },
+                  class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+            <p data-form-validator-target="message" class="text-xs mt-1 hidden"></p>
           </div>
 
-          <div>
+          <div data-form-validator-target="group">
             <%= label_tag :password, "Password", class: "block text-sm font-bold text-zinc-400 mb-2" %>
-            <%= password_field_tag :password, nil, autocomplete: "new-password", class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+            <%= password_field_tag :password, nil, autocomplete: "new-password",
+                  data: { form_validator_target: "input", validate: "required min6", action: "blur->form-validator#validate" },
+                  class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+            <p data-form-validator-target="message" class="text-xs mt-1 hidden"></p>
             <p class="text-xs text-zinc-500 mt-1">Minimum 6 characters</p>
           </div>
 
-          <div>
+          <div data-form-validator-target="group">
             <%= label_tag :password_confirmation, "Confirm Password", class: "block text-sm font-bold text-zinc-400 mb-2" %>
-            <%= password_field_tag :password_confirmation, nil, autocomplete: "new-password", class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+            <%= password_field_tag :password_confirmation, nil, autocomplete: "new-password",
+                  data: { form_validator_target: "input", action: "blur->form-validator#checkPasswordMatch" },
+                  class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition" %>
+            <p data-form-validator-target="message" class="text-xs mt-1 hidden"></p>
           </div>
 
           <div class="pt-2">

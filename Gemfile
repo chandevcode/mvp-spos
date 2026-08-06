@@ -81,3 +81,6 @@ gem "acts_as_tenant"
 gem "litestream", "~> 0.14.0"
 
 gem "veritrans", "~> 2.4"
+
+gem "pundit", "~> 2.5"
+gem "ransack"

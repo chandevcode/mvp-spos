@@ -1,0 +1,149 @@
+ <div class="max-w-2xl mx-auto space-y-6">
+  <!-- Profile Info -->
+  <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-2xl">
+        👤
+      </div>
+      <div>
+        <h1 class="text-2xl font-black tracking-tight">My Profile</h1>
+        <p class="text-sm text-zinc-500">Manage your account information</p>
+      </div>
+    </div>
+    
+    <%= form_with model: @user, url: profile_path, method: :patch, class: "space-y-4" do |f| %>
+      <% if @user.errors.any? %>
+        <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-4">
+          <h2 class="text-red-400 font-bold mb-2"><%= pluralize(@user.errors.count, "error") %> prohibited this update:</h2>
+          <ul class="list-disc list-inside text-red-400 text-sm space-y-1">
+            <% @user.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div>
+        <%= f.label :name, class: "block text-sm font-bold text-zinc-400 mb-2" %>
+        <%= f.text_field :name, autofocus: true, class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition", placeholder: "Your name" %>
+      </div>
+
+      <div>
+        <%= f.label :email, class: "block text-sm font-bold text-zinc-400 mb-2" %>
+        <%= f.email_field :email, class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition", placeholder: "your@email.com" %>
+      </div>
+
+      <hr class="border-zinc-800">
+
+      <div>
+        <%= f.label :password, class: "block text-sm font-bold text-zinc-400 mb-2" %>
+        <%= f.password_field :password, class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition", placeholder: "Leave blank to keep current" %>
+        <p class="text-xs text-zinc-500 mt-1">Minimum 6 characters. Leave blank if you don't want to change it.</p>
+      </div>
+
+      <div>
+        <%= f.label :password_confirmation, class: "block text-sm font-bold text-zinc-400 mb-2" %>
+        <%= f.password_field :password_confirmation, class: "w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition", placeholder: "Confirm new password" %>
+      </div>
+
+      <div class="flex gap-3 pt-4">
+        <%= f.submit "Save Changes", class: "flex-1 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3 rounded-xl font-bold transition-all active:scale-95 cursor-pointer" %>
+        <%= link_to "Cancel", root_path, class: "flex-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-50 py-3 rounded-xl font-bold text-center transition" %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Subscription Info -->
+  <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-2xl">
+        📋
+      </div>
+      <div>
+        <h2 class="text-2xl font-black tracking-tight">Subscription</h2>
+        <p class="text-sm text-zinc-500">Your current plan and status</p>
+      </div>
+    </div>
+
+    <% tenant = @tenant %>
+    <% days_left = tenant.days_until_expiry %>
+    <% is_active = tenant.subscribed? %>
+    <% is_expiring_soon = days_left <= 30 && days_left >= 0 %>
+    <% is_expired = days_left < 0 || tenant.expired? %>
+
+    <div class="space-y-4">
+      <!-- Plan & Status -->
+      <div class="flex items-center justify-between p-4 bg-zinc-950 rounded-2xl">
+        <div>
+          <p class="text-sm text-zinc-500 font-semibold">Plan</p>
+          <p class="text-lg font-black mt-1"><%= tenant.subscription_plan_label %></p>
+        </div>
+        <div class="text-right">
+          <p class="text-sm text-zinc-500 font-semibold">Status</p>
+          <% if is_active %>
+            <% if is_expiring_soon %>
+              <span class="inline-block mt-1 px-3 py-1 bg-amber-500/10 text-amber-400 rounded-full text-sm font-bold">Expiring Soon</span>
+            <% else %>
+              <span class="inline-block mt-1 px-3 py-1 bg-emerald-500/10 text-emerald-400 rounded-full text-sm font-bold">Active</span>
+            <% end %>
+          <% elsif is_expired %>
+            <span class="inline-block mt-1 px-3 py-1 bg-red-500/10 text-red-400 rounded-full text-sm font-bold">Expired</span>
+          <% else %>
+            <span class="inline-block mt-1 px-3 py-1 bg-zinc-800 text-zinc-400 rounded-full text-sm font-bold"><%= tenant.subscription_status&.titleize || "Inactive" %></span>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Expiry Date -->
+      <% if tenant.subscription_expires_at.present? %>
+        <div class="flex items-center justify-between p-4 bg-zinc-950 rounded-2xl">
+          <div>
+            <p class="text-sm text-zinc-500 font-semibold">Expiry Date</p>
+            <p class="text-lg font-black mt-1"><%= tenant.subscription_expires_at.strftime("%b %d, %Y") %></p>
+          </div>
+          <div class="text-right">
+            <p class="text-sm text-zinc-500 font-semibold">Days Left</p>
+            <% if days_left > 0 %>
+              <p class="text-lg font-black mt-1 <%= is_expiring_soon ? 'text-amber-400' : 'text-emerald-400' %>"><%= days_left %> days</p>
+            <% elsif days_left == 0 %>
+              <p class="text-lg font-black mt-1 text-amber-400">Last day</p>
+            <% else %>
+              <p class="text-lg font-black mt-1 text-red-400">Overdue</p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Subscribed Date -->
+      <% if tenant.subscribed_at.present? %>
+        <div class="flex items-center justify-between p-4 bg-zinc-950 rounded-2xl">
+          <div>
+            <p class="text-sm text-zinc-500 font-semibold">Subscribed Since</p>
+            <p class="text-lg font-black mt-1"><%= tenant.subscribed_at.strftime("%b %d, %Y") %></p>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Extend / Renew Button -->
+      <% if !is_active || is_expiring_soon || is_expired %>
+        <div class="pt-2">
+          <% if is_active && is_expiring_soon %>
+            <%= link_to extend_subscription_path, class: "block w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3.5 rounded-xl font-bold text-center transition-all active:scale-95" do %>
+              Extend Subscription →
+            <% end %>
+            <p class="text-xs text-zinc-500 text-center mt-2">Your subscription is expiring soon. Extend to keep using SPOS without interruption.</p>
+          <% elsif is_expired %>
+            <%= link_to extend_subscription_path, class: "block w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3.5 rounded-xl font-bold text-center transition-all active:scale-95" do %>
+              Renew Subscription →
+            <% end %>
+            <p class="text-xs text-zinc-500 text-center mt-2">Your subscription has expired. Renew to continue using SPOS.</p>
+          <% else %>
+            <%= link_to extend_subscription_path, class: "block w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3.5 rounded-xl font-bold text-center transition-all active:scale-95" do %>
+              Activate Subscription →
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

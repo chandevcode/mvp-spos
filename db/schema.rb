@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_05_074320) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_06_011942) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -52,6 +52,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_05_074320) do
   end
 
   create_table "subscription_payments", force: :cascade do |t|
+    t.string "address"
     t.decimal "amount", precision: 12, null: false
     t.datetime "created_at", null: false
     t.string "email", null: false
@@ -61,7 +62,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_05_074320) do
     t.string "midtrans_payment_type"
     t.string "midtrans_status"
     t.string "midtrans_transaction_id"
+    t.string "name"
     t.string "password_digest"
+    t.string "phone_number"
     t.string "plan_type", null: false
     t.datetime "settlement_time"
     t.string "snap_redirect_url"
@@ -115,9 +118,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_05_074320) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "address"
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.string "name"
+    t.string "phone_number"
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"

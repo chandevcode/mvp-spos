@@ -1,6 +1,7 @@
 class InventoryController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_admin_or_owner
+  before_action :check_subscription
 
   def index
     @products = Product.order(:name)

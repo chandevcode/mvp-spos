@@ -1,0 +1,93 @@
+ <div class="max-w-2xl mx-auto">
+  <%= link_to edit_profile_path, class: "inline-flex items-center gap-2 text-zinc-400 hover:text-zinc-50 mb-6 transition" do %>
+    <span>←</span> Back to Profile
+  <% end %>
+
+  <div class="max-w-md mx-auto text-center">
+    <div class="mb-8">
+      <h1 class="text-3xl font-black tracking-tight mb-2">Complete Payment</h1>
+      <p class="text-zinc-400">Extend your SPOS subscription</p>
+    </div>
+
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 mb-6">
+      <div class="mb-6">
+        <p class="text-zinc-500 text-sm mb-1">Plan</p>
+        <p class="text-xl font-bold"><%= @subscription_payment.plan_label %></p>
+      </div>
+
+      <div class="mb-6">
+        <p class="text-zinc-500 text-sm mb-1">Total Payment</p>
+        <p class="text-3xl font-black text-emerald-400"><%= @subscription_payment.formatted_amount %></p>
+      </div>
+
+      <div class="mb-6">
+        <p class="text-zinc-500 text-sm mb-1">Account</p>
+        <p class="text-zinc-300 font-semibold"><%= @subscription_payment.email %></p>
+      </div>
+
+      <div id="midtrans-snap-container" class="mt-6">
+        <button id="pay-button" class="w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3 rounded-xl font-bold transition-all active:scale-95 cursor-pointer">
+          Pay Now
+        </button>
+      </div>
+
+      <div class="mt-4 p-3 bg-zinc-950 rounded-xl">
+        <p class="text-xs text-zinc-500">
+          🔒 Secured by Midtrans. We accept various payment methods including
+          credit/debit cards, bank transfers, e-wallets (GoPay, OVO, DANA, LinkAja),
+          and convenience stores.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Midtrans Snap.js -->
+  <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+          data-client-key="<%= Rails.application.credentials.dig(:midtrans, :client_key) || ENV['MIDTRANS_CLIENT_KEY'] %>"></script>
+  <script>
+    document.getElementById('pay-button').onclick = function () {
+      snap.pay('<%= @subscription_payment.snap_token %>', {
+        onSuccess: function () {
+          checkPaymentStatus();
+        },
+        onPending: function () {
+          checkPaymentStatus();
+        },
+        onError: function () {
+          alert('Payment failed. Please try again.');
+          window.location.href = '<%= extend_subscription_path %>';
+        },
+        onClose: function () {
+          // User closed the popup without finishing payment
+        }
+      });
+    };
+
+    function checkPaymentStatus() {
+      var checkInterval = setInterval(function () {
+        fetch('<%= extend_subscription_payment_status_path(@subscription_payment) %>')
+          .then(function (response) { return response.json(); })
+          .then(function (data) {
+            if (data.status === 'success') {
+              clearInterval(checkInterval);
+              window.location.href = '<%= extend_subscription_success_path %>';
+            } else if (data.status === 'failed' || data.status === 'expired') {
+              clearInterval(checkInterval);
+              alert('Payment failed. Please try again.');
+              window.location.href = '<%= extend_subscription_path %>';
+            }
+          })
+          .catch(function () {
+            // Continue polling
+          });
+      }, 2000);
+
+      // Timeout after 2 minutes
+      setTimeout(function () {
+        clearInterval(checkInterval);
+        window.location.href = '<%= edit_profile_path %>';
+        alert('Payment is being processed. Check your subscription status in your profile.');
+      }, 120000);
+    }
+  </script>
+</div>

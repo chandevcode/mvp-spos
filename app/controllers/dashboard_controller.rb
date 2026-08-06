@@ -1,6 +1,7 @@
 class DashboardController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_owner
+  before_action :check_subscription
 
   def index
     @start_date = params[:start_date]&.to_date || 7.days.ago.to_date

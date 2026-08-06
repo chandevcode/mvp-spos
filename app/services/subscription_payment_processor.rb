@@ -1,9 +1,20 @@
 class SubscriptionPaymentProcessor
   def self.process_successful_payment(subscription_payment)
     return if subscription_payment.success?
+
+    # Determine if this is an extension or a new registration
+    if subscription_payment.tenant.present?
+      process_extension_payment(subscription_payment)
+    else
+      process_new_registration_payment(subscription_payment)
+    end
+  end
+
+  def self.process_new_registration_payment(subscription_payment)
     return unless subscription_payment.password_digest.present?
     return unless subscription_payment.email.present?
     return unless subscription_payment.tenant_name.present?
+    return unless subscription_payment.name.present?
 
     ActiveRecord::Base.transaction do
       # Create the tenant
@@ -15,6 +26,9 @@ class SubscriptionPaymentProcessor
       # Create the user with the pre-encrypted password
       user = User.new(
         email: subscription_payment.email,
+        name: subscription_payment.name,
+        address: subscription_payment.address,
+        phone_number: subscription_payment.phone_number,
         tenant: tenant,
         role: :owner
       )
@@ -31,6 +45,43 @@ class SubscriptionPaymentProcessor
         tenant: tenant,
         user: user
       )
+
+      # Send welcome email
+      UserMailer.registration_success(user, subscription_payment).deliver_later
+    end
+  end
+
+  def self.process_extension_payment(subscription_payment)
+    tenant = subscription_payment.tenant
+    return unless tenant
+
+    ActiveRecord::Base.transaction do
+      # Extend the subscription from now
+      new_expiry = if tenant.subscription_expires_at.present? && tenant.subscription_expires_at > Time.current
+                     # Extend from current expiry date
+                     case subscription_payment.plan_type
+                     when "monthly" then tenant.subscription_expires_at + 1.month
+                     when "annual" then tenant.subscription_expires_at + 12.months
+                     else tenant.subscription_expires_at + 1.month
+                     end
+                   else
+                     # Was expired or never set — start from now
+                     case subscription_payment.plan_type
+                     when "monthly" then 1.month.from_now
+                     when "annual" then 12.months.from_now
+                     else 1.month.from_now
+                     end
+                   end
+
+      tenant.update!(
+        subscription_status: :active,
+        subscription_plan: subscription_payment.plan_type,
+        subscribed_at: Time.current,
+        subscription_expires_at: new_expiry
+      )
+
+      # Update subscription payment
+      subscription_payment.update!(status: :success)
     end
   end
 

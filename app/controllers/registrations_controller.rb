@@ -1,6 +1,6 @@
 class RegistrationsController < ApplicationController
   layout "registration"
-  skip_before_action :set_tenant, only: [:new, :create, :choose_plan, :payment, :payment_status, :success]
+  skip_before_action :set_tenant, only: [:new, :create, :choose_plan, :payment, :payment_status, :success, :check_email]
 
   PLAN_PRICES = { "monthly" => 100_000, "annual" => 1_000_000 }.freeze
 
@@ -23,6 +23,7 @@ class RegistrationsController < ApplicationController
     # Validate required fields
     errors = []
     errors << "Plan type must be selected" unless @plan_type
+    errors << "Owner name can't be blank" if params[:name].blank?
     errors << "Email can't be blank" if params[:email].blank?
     errors << "Restaurant name can't be blank" if params[:tenant_name].blank?
     errors << "Password can't be blank" if params[:password].blank?
@@ -33,7 +34,8 @@ class RegistrationsController < ApplicationController
     end
 
     if params[:email].present? && User.exists?(email: params[:email])
-      errors << "Email has already been taken"
+      flash[:alert] = "This email is already registered. Please sign in and extend your subscription from your profile."
+      redirect_to new_user_session_path(email: params[:email]) and return
     end
 
     unless params[:email].to_s.match?(Devise.email_regexp)
@@ -49,6 +51,9 @@ class RegistrationsController < ApplicationController
     # Create subscription payment with encrypted password
     @subscription_payment = SubscriptionPayment.new(
       email: params[:email],
+      name: params[:name],
+      address: params[:address],
+      phone_number: params[:phone_number],
       tenant_name: params[:tenant_name],
       plan_type: @plan_type,
       password: params[:password],
@@ -127,6 +132,22 @@ class RegistrationsController < ApplicationController
     end
 
     render json: { status: @subscription_payment.status }
+  end
+
+  def check_email
+    email = params[:email].to_s.strip.downcase
+
+    if email.blank?
+      render json: { exists: false, message: "" } and return
+    end
+
+    exists = User.exists?(email: email)
+
+    if exists
+      render json: { exists: true, message: "This email already has an account. Please sign in instead." }
+    else
+      render json: { exists: false, message: "" }
+    end
   end
 
   def success
