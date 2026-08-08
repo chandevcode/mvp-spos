@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for spos on 2026-08-06T14:13:42+08:00
+# fly.toml app configuration file generated for spos on 2026-08-06T20:50:57+08:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -8,18 +8,14 @@ primary_region = 'sin'
 console_command = '/rails/bin/rails console'
 
 [build]
-
 [env]
-  RAILS_MASTER_KEY = '40ee470d7278f311c6695f878c557597'
-  PORT = '3000'
-  TARGET_PORT = '3000'
 
-[mounts]
+[[mounts]]
   source = 'spos_storage'
-  destination = '/rails/storage'
+  destination = '/rails/storage/production.sqlite3'
 
 [http_service]
-  internal_port = 80
+  internal_port = 8080
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
@@ -37,6 +33,7 @@ console_command = '/rails/bin/rails console'
 
     [http_service.checks.headers]
       X-Forwarded-Proto = 'https'
+
 
 [[vm]]
   memory = '1gb'
