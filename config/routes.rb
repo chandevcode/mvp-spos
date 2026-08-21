@@ -41,7 +41,7 @@ Rails.application.routes.draw do
       constraints: { plan: /monthly|annual/ }
 
   # Midtrans webhook
-  post "midtrans/webhook", to: "midtrans/webhooks#notification"
+  post "midtrans/webhook", to: "payment_webhooks#notification"
 
   root "home#index"
 

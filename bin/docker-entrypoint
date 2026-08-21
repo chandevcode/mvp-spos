@@ -6,6 +6,13 @@ if [ -z "${LD_PRELOAD+x}" ]; then
     export LD_PRELOAD
 fi
 
+# Ensure /data volume and app directories are owned by rails user, then drop to rails user
+if [ "$(id -u)" = "0" ]; then
+    mkdir -p /data
+    chown -R rails:rails /data db log storage tmp
+    exec setpriv --reuid=rails --regid=rails --clear-groups "$0" "$@"
+fi
+
 # If running the rails server then create or migrate existing database
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
   ./bin/rails db:prepare
