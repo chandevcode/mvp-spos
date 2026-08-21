@@ -1,0 +1,26 @@
+# Render blueprint for spos (Docker deploy).
+# Deploy: push this repo to GitHub, connect it in Render, or use
+#   `render blueprint launch` / "New +" -> "Blueprint" and point at this file.
+services:
+  - type: web
+    name: spos
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter            # SQLite needs a persistent disk, which requires a paid plan
+    disk:
+      name: sqlite-data      # WITHOUT this, the SQLite DB is wiped on every deploy
+      mountPath: /rails/storage
+      sizeGB: 1
+    envVars:
+      # Render forces web services to listen on $PORT (default 10000).
+      # Thruster reads HTTP_PORT (not PORT) for its listener port.
+      - key: HTTP_PORT
+        value: '10000'
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_LOG_TO_STDOUT
+        value: 'true'
+      # Set this in the Render dashboard (Services -> Environment):
+      #   RAILS_MASTER_KEY = contents of config/master.key
+      - key: RAILS_MASTER_KEY
+        sync: false

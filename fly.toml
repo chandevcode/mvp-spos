@@ -9,10 +9,11 @@ console_command = '/rails/bin/rails console'
 
 [build]
 [env]
+  HTTP_PORT = "8080"
 
 [[mounts]]
   source = 'spos_storage'
-  destination = '/rails/storage/production.sqlite3'
+  destination = '/rails/storage'
 
 [http_service]
   internal_port = 8080
