@@ -62,5 +62,4 @@ COPY --chown=rails:rails --from=build /rails /rails
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
-EXPOSE 80
 CMD ["./bin/thrust", "./bin/rails", "server"]
