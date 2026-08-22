@@ -4,6 +4,9 @@ A modern, mobile-friendly, multi-tenant SaaS Point of Sale (POS) system optimize
 
 **[ Link Live Demo ](https://kasirku.fly.dev/)**
 
+ **Demo Account**
+  * Owner: owner@kedaikopi.com / password
+  * Admin: admin@kedaikopi.com / password
 ---
 
 ## 📖 About the Project
