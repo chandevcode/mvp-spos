@@ -2,6 +2,8 @@
 
 A modern, mobile-friendly, multi-tenant SaaS Point of Sale (POS) system optimized for coffee shops, cafes, and restaurants. Built with **Ruby on Rails 8**, **Tailwind CSS**, and powered by **Midtrans Payment Gateway** for subscriptions.
 
+**[ Link Live Demo ](https://kasirku.fly.dev/)**
+
 ---
 
 ## 📖 About the Project
