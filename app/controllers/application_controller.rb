@@ -7,9 +7,23 @@ class ApplicationController < ActionController::Base
 
   set_current_tenant_through_filter
   before_action :set_tenant
+  before_action :require_active_subscription
   before_action :initialize_cart
 
   private
+
+  # Expired accounts may only reach their profile to extend the plan.
+  # Exempted in ProfilesController and SubscriptionsController (the extend flow).
+  def require_active_subscription
+    return unless user_signed_in?
+
+    tenant = current_user.tenant
+    return unless tenant
+
+    unless tenant.subscribed?
+      redirect_to edit_profile_path, notice: "Your subscription is not active. Please extend your plan to continue using SPOS."
+    end
+  end
 
   def check_subscription
     return unless user_signed_in?

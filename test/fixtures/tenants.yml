@@ -3,3 +3,5 @@
 one:
   name: Test Tenant
   subdomain: test
+  subscription_status: 1
+  subscription_expires_at: <%= 1.year.from_now %>

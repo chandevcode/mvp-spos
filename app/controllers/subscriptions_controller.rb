@@ -1,4 +1,5 @@
 class SubscriptionsController < ApplicationController
+  skip_before_action :require_active_subscription
   before_action :authenticate_user!
 
   def extend_plan

@@ -133,12 +133,12 @@
             <% end %>
             <p class="text-xs text-zinc-500 text-center mt-2">Your subscription is expiring soon. Extend to keep using SPOS without interruption.</p>
           <% elsif is_expired %>
-            <%= link_to extend_subscription_path, class: "block w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3.5 rounded-xl font-bold text-center transition-all active:scale-95" do %>
+            <%= link_to extend_subscription_path, class: "block w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3 rounded-xl font-bold text-center transition-all active:scale-95" do %>
               Renew Subscription →
             <% end %>
-            <p class="text-xs text-zinc-500 text-center mt-2">Your subscription has expired. Renew to continue using SPOS.</p>
+            <p class="text-xs py-3 text-zinc-500 text-center mt-2">Your subscription has expired. Renew to continue using SPOS.</p>
           <% else %>
-            <%= link_to extend_subscription_path, class: "block w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3.5 rounded-xl font-bold text-center transition-all active:scale-95" do %>
+            <%= link_to extend_subscription_path, class: "block w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 py-3 rounded-xl font-bold text-center transition-all active:scale-95" do %>
               Activate Subscription →
             <% end %>
           <% end %>
