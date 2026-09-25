@@ -1,10 +1,10 @@
  <div class="max-w-2xl mx-auto">
-  <%= link_to edit_profile_path, class: "inline-flex items-center gap-2 text-zinc-400 hover:text-zinc-50 mb-6 transition" do %>
+  <%= link_to edit_profile_path, class: "inline-flex items-center gap-2 text-zinc-400 hover:text-zinc-50 mb-4 sm:mb-6 transition" do %>
     <span>←</span> Back to Profile
   <% end %>
 
-  <div class="text-center mb-8">
-    <h1 class="text-3xl font-black tracking-tight">Extend Subscription</h1>
+  <div class="text-center mb-6 sm:mb-8">
+    <h1 class="text-2xl sm:text-3xl font-black tracking-tight">Extend Subscription</h1>
     <p class="text-zinc-400 mt-2">Choose a plan to extend your subscription</p>
   </div>
 
@@ -12,15 +12,15 @@
     <!-- Monthly Plan -->
     <label class="group block cursor-pointer">
       <%= radio_button_tag :plan_type, "monthly", false, class: "hidden peer" %>
-      <div class="bg-zinc-900 border-2 border-zinc-800 rounded-3xl p-6 peer-checked:border-emerald-500 hover:border-emerald-500/50 transition-all duration-300 h-full flex flex-col">
-        <div class="text-4xl mb-4">📆</div>
+      <div class="bg-zinc-900 border-2 border-zinc-800 rounded-3xl p-5 sm:p-6 peer-checked:border-emerald-500 hover:border-emerald-500/50 transition-all duration-300 h-full flex flex-col">
+        <div class="text-3xl sm:text-4xl mb-3 sm:mb-4">📆</div>
         <h2 class="text-2xl font-black mb-2">Monthly</h2>
         <p class="text-zinc-400 text-sm mb-6">Extend month by month. Flexible and simple.</p>
         <div class="mb-6">
-          <span class="text-4xl font-black text-emerald-400">Rp 100.000</span>
+          <span class="text-3xl sm:text-4xl font-black text-emerald-400">Rp 150.000</span>
           <span class="text-zinc-500 text-sm">/month</span>
         </div>
-        <ul class="space-y-3 mb-8">
+        <ul class="space-y-2.5 sm:space-y-3 mb-6 sm:mb-8">
           <li class="flex items-start gap-3 text-sm text-zinc-300">
             <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
             Full POS system access
@@ -43,15 +43,15 @@
     <!-- Annual Plan -->
     <label class="group block cursor-pointer">
       <%= radio_button_tag :plan_type, "annual", false, class: "hidden peer" %>
-      <div class="bg-zinc-900 border-2 border-zinc-800 peer-checked:border-emerald-500 rounded-3xl p-6 hover:border-emerald-500 transition-all duration-300 h-full flex flex-col relative overflow-hidden">
+      <div class="bg-zinc-900 border-2 border-zinc-800 peer-checked:border-emerald-500 rounded-3xl p-5 sm:p-6 hover:border-emerald-500 transition-all duration-300 h-full flex flex-col relative overflow-hidden">
         <div class="absolute top-4 right-4 bg-emerald-500 text-zinc-950 text-xs font-bold px-3 py-1 rounded-full">
           BEST VALUE
         </div>
-        <div class="text-4xl mb-4">🌟</div>
+        <div class="text-3xl sm:text-4xl mb-3 sm:mb-4">🌟</div>
         <h2 class="text-2xl font-black mb-2">Annual</h2>
         <p class="text-zinc-400 text-sm mb-6">Best value. Save 2 months!</p>
         <div class="mb-6">
-          <span class="text-4xl font-black text-emerald-400">Rp 1.000.000</span>
+          <span class="text-3xl sm:text-4xl font-black text-emerald-400">Rp 1.500.000</span>
           <span class="text-zinc-500 text-sm">/year</span>
         </div>
         <div class="bg-emerald-500/10 rounded-xl p-3 mb-6">
@@ -59,7 +59,7 @@
             Save Rp 200.000 compared to monthly
           </p>
         </div>
-        <ul class="space-y-3 mb-8">
+        <ul class="space-y-2.5 sm:space-y-3 mb-6 sm:mb-8">
           <li class="flex items-start gap-3 text-sm text-zinc-300">
             <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
             Everything in Monthly, plus:

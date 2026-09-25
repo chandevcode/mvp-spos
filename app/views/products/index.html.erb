@@ -1,7 +1,7 @@
 <div class="max-w-7xl mx-auto">
-  <div class="flex items-center justify-between mb-6">
-    <h1 class="text-3xl font-black tracking-tight">Products</h1>
-    <%= link_to new_product_path, class: "bg-emerald-500 hover:bg-emerald-400 text-zinc-950 px-5 py-2.5 rounded-xl font-bold transition-all active:scale-95" do %>
+  <div class="flex items-center justify-between mb-4 sm:mb-6">
+    <h1 class="text-2xl sm:text-3xl font-black tracking-tight">Products</h1>
+    <%= link_to new_product_path, class: "bg-emerald-500 hover:bg-emerald-400 text-zinc-950 px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold transition-all active:scale-95" do %>
       + New Product
     <% end %>
   </div>
@@ -18,8 +18,8 @@
 
   <div class="grid gap-3">
     <% @products.each do |product| %>
-      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center gap-4 hover:border-emerald-500/50 transition">
-        <div class="w-16 h-16 bg-gradient-to-br from-emerald-500/20 to-zinc-800 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 overflow-hidden">
+      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:border-emerald-500/50 transition">
+        <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-emerald-500/20 to-zinc-800 rounded-xl flex items-center justify-center text-xl sm:text-2xl flex-shrink-0 overflow-hidden">
           <% if product.image.attached? %>
             <%= image_tag product.image, class: "w-full h-full object-cover" %>
           <% else %>
@@ -27,10 +27,10 @@
           <% end %>
         </div>
         <div class="flex-1 min-w-0">
-          <h3 class="font-bold text-lg truncate"><%= product.name %></h3>
+          <h3 class="font-bold text-base sm:text-lg truncate"><%= product.name %></h3>
           <p class="text-sm text-zinc-500 truncate"><%= product.description %></p>
           <div class="flex items-center gap-2 mt-1 flex-wrap">
-            <span class="text-emerald-400 font-black text-lg"><%= format_currency(product.price) %></span>
+            <span class="text-emerald-400 font-black text-base sm:text-lg"><%= format_currency(product.price) %></span>
             <span class="text-xs px-2 py-0.5 bg-zinc-800 text-zinc-400 rounded-full"><%= product.category %></span>
             <% if product.out_of_stock? %>
               <span class="text-xs px-2 py-0.5 bg-red-500/10 text-red-400 rounded-full">Out of Stock</span>
@@ -41,15 +41,15 @@
             <% end %>
           </div>
         </div>
-        <div class="flex gap-2">
-          <%= link_to product, class: "w-10 h-10 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center justify-center transition" do %>
-            <span class="text-lg">👁️</span>
+        <div class="flex flex-wrap justify-end gap-1.5 sm:gap-2">
+          <%= link_to product, class: "w-9 h-9 sm:w-10 sm:h-10 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center justify-center transition" do %>
+            <span class="text-base sm:text-lg">👁️</span>
           <% end %>
-          <%= link_to edit_product_path(product), class: "w-10 h-10 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center justify-center transition" do %>
-            <span class="text-lg">✏️</span>
+          <%= link_to edit_product_path(product), class: "w-9 h-9 sm:w-10 sm:h-10 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center justify-center transition" do %>
+            <span class="text-base sm:text-lg">✏️</span>
           <% end %>
-          <%= button_to product, method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "w-10 h-10 bg-red-500/10 hover:bg-red-500/20 rounded-xl flex items-center justify-center transition" do %>
-            <span class="text-lg">🗑️</span>
+          <%= button_to product, method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "w-9 h-9 sm:w-10 sm:h-10 bg-red-500/10 hover:bg-red-500/20 rounded-xl flex items-center justify-center transition" do %>
+            <span class="text-base sm:text-lg">🗑️</span>
           <% end %>
         </div>
       </div>

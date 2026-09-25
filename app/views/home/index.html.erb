@@ -8,9 +8,9 @@
     </div>
     
     <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-      <%= link_to "All", root_path(search: params[:search]), class: "px-5 py-2 #{params[:category].blank? ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800'} rounded-full text-sm font-semibold whitespace-nowrap transition" %>
-      <%= link_to "Food", root_path(category: 'food', search: params[:search]), class: "px-5 py-2 #{params[:category] == 'food' ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800'} rounded-full text-sm font-semibold whitespace-nowrap transition" %>
-      <%= link_to "Beverage", root_path(category: 'beverage', search: params[:search]), class: "px-5 py-2 #{params[:category] == 'beverage' ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800'} rounded-full text-sm font-semibold whitespace-nowrap transition" %>
+      <%= link_to "All", root_path(search: params[:search]), class: "px-4 py-1.5 sm:px-5 sm:py-2 #{params[:category].blank? ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800'} rounded-full text-sm font-semibold whitespace-nowrap transition" %>
+      <%= link_to "Food", root_path(category: 'food', search: params[:search]), class: "px-4 py-1.5 sm:px-5 sm:py-2 #{params[:category] == 'food' ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800'} rounded-full text-sm font-semibold whitespace-nowrap transition" %>
+      <%= link_to "Beverage", root_path(category: 'beverage', search: params[:search]), class: "px-4 py-1.5 sm:px-5 sm:py-2 #{params[:category] == 'beverage' ? 'bg-emerald-500 text-zinc-950' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800'} rounded-full text-sm font-semibold whitespace-nowrap transition" %>
     </div>
   <% end %>
 
@@ -28,17 +28,17 @@
                 <% if product.image.attached? %>
                   <%= image_tag product.image, class: "w-full h-full object-cover" %>
                 <% else %>
-                  <div class="text-4xl"><%= product.category == "food" ? "🍕" : "🥤" %></div>
+                  <div class="text-3xl sm:text-4xl"><%= product.category == "food" ? "🍕" : "🥤" %></div>
                 <% end %>
               </div>
-              <div class="p-3 flex-1 flex flex-col justify-between">
+              <div class="p-4 sm:p-3 flex-1 flex flex-col justify-between">
                 <div>
                   <h3 class="font-bold text-sm mb-1 truncate"><%= product.name %></h3>
                   <p class="text-xs text-zinc-500 mb-2 truncate"><%= product.description %></p>
                 </div>
                 <div class="flex items-center justify-between mt-auto">
-                  <span class="text-emerald-400 font-black text-lg"><%= format_currency(product.price) %></span>
-                  <div class="bg-zinc-700 text-zinc-500 w-8 h-8 rounded-full flex items-center justify-center font-bold">
+                  <span class="text-emerald-400 p-2 font-black text-base sm:text-lg"><%= format_currency(product.price) %></span>
+                  <div class="bg-zinc-700 text-zinc-500 w-7 h-7 p-2 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold">
                     +
                   </div>
                 </div>
@@ -55,18 +55,18 @@
                 <% if product.image.attached? %>
                   <%= image_tag product.image, class: "w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300" %>
                 <% else %>
-                  <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300"><%= product.category == "food" ? "🍕" : "🥤" %></div>
+                  <div class="text-3xl sm:text-4xl transform group-hover:scale-110 transition-transform duration-300"><%= product.category == "food" ? "🍕" : "🥤" %></div>
                 <% end %>
                 <div class="absolute inset-0 bg-emerald-500/0 group-active:bg-emerald-500/10 transition-colors"></div>
               </div>
-              <div class="p-3 flex-1 flex flex-col justify-between">
+              <div class="p-4 sm:p-3 flex-1 flex flex-col justify-between">
                 <div>
                   <h3 class="font-bold text-sm mb-1 truncate group-hover:text-amber-400 transition-colors"><%= product.name %></h3>
                   <p class="text-xs text-zinc-500 mb-2 truncate"><%= product.description %></p>
                 </div>
                 <div class="flex items-center justify-between mt-auto">
-                  <span class="text-emerald-400 font-black text-lg"><%= format_currency(product.price) %></span>
-                  <div class="bg-amber-500 group-hover:bg-amber-400 text-zinc-950 w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all group-active:scale-95">
+                  <span class="text-emerald-400 font-black text-base sm:text-lg"><%= format_currency(product.price) %></span>
+                  <div class="bg-amber-500 px-2 group-hover:bg-amber-400 text-zinc-950 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold transition-all group-active:scale-95">
                     +
                   </div>
                 </div>
@@ -80,18 +80,18 @@
                 <% if product.image.attached? %>
                   <%= image_tag product.image, class: "w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300" %>
                 <% else %>
-                  <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300"><%= product.category == "food" ? "🍕" : "🥤" %></div>
+                  <div class="text-3xl sm:text-4xl transform group-hover:scale-110 transition-transform duration-300"><%= product.category == "food" ? "🍕" : "🥤" %></div>
                 <% end %>
                 <div class="absolute inset-0 bg-emerald-500/0 group-active:bg-emerald-500/10 transition-colors"></div>
               </div>
-              <div class="p-3 flex-1 flex flex-col justify-between">
+              <div class="p-4 sm:p-3 flex-1 flex flex-col justify-between">
                 <div>
                   <h3 class="font-bold text-sm mb-1 truncate group-hover:text-emerald-400 transition-colors"><%= product.name %></h3>
                   <p class="text-xs text-zinc-500 mb-2 truncate"><%= product.description %></p>
                 </div>
                 <div class="flex items-center justify-between mt-auto">
-                  <span class="text-emerald-400 font-black text-lg"><%= format_currency(product.price) %></span>
-                  <div class="bg-emerald-500 group-hover:bg-emerald-400 text-zinc-950 w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all group-active:scale-95">
+                  <span class="text-emerald-400 font-black text-base sm:text-lg"><%= format_currency(product.price) %></span>
+                  <div class="bg-emerald-500 px-2 group-hover:bg-emerald-400 text-zinc-950 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold transition-all group-active:scale-95">
                     +
                   </div>
                 </div>
@@ -102,7 +102,7 @@
       <% end %>
     </div>
   <% else %>
-    <div class="text-center py-20">
+    <div class="text-center py-14 sm:py-20">
       <p class="text-zinc-500 text-lg">No products found</p>
       <% if user_signed_in? %>
         <%= link_to "Add Product", new_product_path, class: "inline-block mt-4 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 rounded-xl font-bold transition" %>

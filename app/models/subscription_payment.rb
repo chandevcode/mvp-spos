@@ -1,5 +1,5 @@
 class SubscriptionPayment < ApplicationRecord
-  PLAN_TYPES = { "monthly" => 100_000, "annual" => 1_000_000 }.freeze
+  PLAN_TYPES = { "monthly" => 150_000, "annual" => 1_500_000 }.freeze
   PLAN_DURATIONS = { "monthly" => 1.month, "annual" => 12.months }.freeze
 
   has_secure_password :password, validations: false

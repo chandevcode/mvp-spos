@@ -3,8 +3,8 @@
     <% cart.each do |product_id, quantity| %>
       <% product = Product.find_by(id: product_id) %>
       <% next unless product %>
-      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center gap-4 <%= 'border-amber-500/30' if product.low_stock? %>">
-        <div class="w-16 h-16 bg-gradient-to-br from-emerald-500/20 to-zinc-800 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 overflow-hidden">
+      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-3 sm:p-4 flex items-center gap-3 sm:gap-4 <%= 'border-amber-500/30' if product.low_stock? %>">
+        <div class="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-emerald-500/20 to-zinc-800 rounded-xl flex items-center justify-center text-xl sm:text-2xl flex-shrink-0 overflow-hidden">
           <% if product.image.attached? %>
             <%= image_tag product.image, class: "w-full h-full object-cover" %>
           <% else %>
@@ -12,8 +12,8 @@
           <% end %>
         </div>
         <div class="flex-1 min-w-0">
-          <h3 class="font-bold text-lg truncate"><%= product.name %></h3>
-          <p class="text-emerald-400 font-black text-lg"><%= format_currency(product.price) %></p>
+          <h3 class="font-bold text-base sm:text-lg truncate"><%= product.name %></h3>
+          <p class="text-emerald-400 font-black text-base sm:text-lg"><%= format_currency(product.price) %></p>
           <% if product.low_stock? %>
             <p class="text-xs text-amber-400 font-semibold mt-1">⚠️ Only <%= product.stock_quantity %> left</p>
           <% end %>
@@ -37,7 +37,7 @@
     <% end %>
   </div>
 
-  <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4">
+  <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 sm:p-6 space-y-4">
     <div class="flex items-center justify-between text-lg">
       <span class="text-zinc-400">Subtotal</span>
       <span class="font-bold"><%= format_currency(cart_total) %></span>
@@ -72,8 +72,8 @@
     </div>
   </div>
 <% else %>
-  <div class="text-center py-20">
-    <div class="text-6xl mb-4">🛒</div>
+  <div class="text-center py-14 sm:py-20">
+    <div class="text-5xl sm:text-6xl mb-4">🛒</div>
     <p class="text-zinc-500 text-lg mb-6">Your cart is empty</p>
     <%= link_to "Start Shopping", root_path, class: "inline-block px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 rounded-xl font-bold transition" %>
   </div>

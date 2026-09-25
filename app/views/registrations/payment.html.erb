@@ -1,8 +1,8 @@
 <div class="min-h-screen flex items-center justify-center px-4">
     <div class="w-full max-w-md text-center">
-      <div class="mb-8">
+      <div class="mb-6 sm:mb-8">
         <%= link_to root_path, class: "inline-block" do %>
-          <h1 class="text-5xl font-black tracking-tighter text-emerald-400 mb-2">SPOS</h1>
+          <h1 class="text-4xl sm:text-5xl font-black tracking-tighter text-emerald-400 mb-2">SPOS</h1>
         <% end %>
         <p class="text-zinc-400 font-semibold">Complete your payment</p>
       </div>
@@ -15,7 +15,7 @@
 
         <div class="mb-6">
           <p class="text-zinc-500 text-sm mb-1">Total Payment</p>
-          <p class="text-3xl font-black text-emerald-400"><%= @subscription_payment.formatted_amount %></p>
+          <p class="text-2xl sm:text-3xl font-black text-emerald-400"><%= @subscription_payment.formatted_amount %></p>
         </div>
 
         <div class="mb-6">
@@ -47,7 +47,7 @@
   </div>
 
   <!-- Midtrans Snap.js -->
-  <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+  <script src="<%= MidtransEnvironment.snap_js_url %>"
           data-client-key="<%= Rails.application.credentials.dig(:midtrans, :client_key) || ENV['MIDTRANS_CLIENT_KEY'] %>"></script>
   <script>
     document.getElementById('pay-button').onclick = function () {
