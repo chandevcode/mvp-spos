@@ -1,5 +1,5 @@
 class CartController < ApplicationController
-  before_action :authenticate_user!, only: [:checkout]
+  before_action :authenticate_user!, only: [ :checkout ]
 
   def add
     product_id = params[:product_id]
@@ -82,28 +82,42 @@ class CartController < ApplicationController
   def show
   end
 
+  class InsufficientStock < StandardError; end
+
   def checkout
-    # Validate stock before finalizing
-    cart.each do |product_id, quantity|
-      product = Product.find_by(id: product_id)
-      unless product && product.stock_quantity >= quantity
-        redirect_to cart_path, alert: "#{product&.name || 'Product'} has insufficient stock. Please update your cart." and return
-      end
+    if cart.blank?
+      redirect_to cart_path, alert: "Your cart is empty." and return
     end
 
-    transaction = current_user.transactions.create!(
-      total_price: cart_total,
-      status: :success,
-      payment_method: params[:payment_method]
-    )
+    transaction = nil
 
-    cart.each do |product_id, quantity|
-      product = Product.find(product_id)
-      transaction.transaction_items.create!(
-        product: product,
-        quantity: quantity,
-        price: product.price
+    ActiveRecord::Base.transaction do
+      transaction = current_user.transactions.create!(
+        total_price: cart_total,
+        status: :success,
+        payment_method: params[:payment_method]
       )
+
+      cart.each do |product_id, quantity|
+        quantity = quantity.to_i
+        product  = Product.find(product_id)
+
+        transaction.transaction_items.create!(
+          product: product,
+          quantity: quantity,
+          price: product.price
+        )
+
+        # Decrement in SQL, only if there is enough stock
+        updated = Product
+          .where(id: product.id)
+          .where("stock_quantity >= ?", quantity)
+          .update_all([ "stock_quantity = stock_quantity - ?", quantity ])
+
+        if updated.zero?
+          raise InsufficientStock, "#{product.name} has insufficient stock. Please update your cart."
+        end
+      end
     end
 
     session[:cart] = {}
@@ -113,5 +127,9 @@ class CartController < ApplicationController
     else
       redirect_to root_path, notice: "Order completed successfully!"
     end
+  rescue InsufficientStock => e
+    redirect_to cart_path, alert: e.message
+  rescue ActiveRecord::RecordNotFound
+    redirect_to cart_path, alert: "A product in your cart no longer exists."
   end
 end
